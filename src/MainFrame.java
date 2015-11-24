@@ -30,9 +30,9 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        
+        Fecha.setEditable(false);
         setDate();
-        Timer timDate = new Timer(20000,new ActionListener(){ // 20 segundos
+        Timer timDate = new Timer(1000,new ActionListener(){ // 20 segundos
             @Override
             public void actionPerformed(ActionEvent evt){
                 setDate();
@@ -205,7 +205,7 @@ public class MainFrame extends javax.swing.JFrame {
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaFuturosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 48, Short.MAX_VALUE))
+                .addGap(0, 56, Short.MAX_VALUE))
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -266,7 +266,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -328,7 +328,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -367,7 +367,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(EscritorioLayout.createSequentialGroup()
                         .addComponent(VentanaOpcionesPUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(173, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EscritorioLayout.createSequentialGroup()
                         .addGap(120, 120, 120)
                         .addComponent(VentanaOpcionesCALL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -387,7 +387,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
         );
         jPanel2Layout.setVerticalGroup(
@@ -516,7 +516,7 @@ private MEFF_Opciones opciones = new MEFF_Opciones();
 
 private void setDate(){
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy  HH:mm ");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss ");
         String formatedDate = sdf.format(date);
         formatedDate = formatedDate.concat(" (local)");
         Fecha.setText(formatedDate);
@@ -577,6 +577,43 @@ private void CollectData(){
             TablaFuturos.setValueAt(f.Hora, i, 11);
         }
         //Notificaciones.setText("Datos disponibles");
-    }
+        
+        opciones.getOptions();
+        int nopciones = opciones.Opciones.size();
+        //System.out.println(nopciones);
+        tablemodel = (DefaultTableModel)TablaOpcionesCALL.getModel();
+        tablemodel.setRowCount(nopciones);
+        tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
+        tablemodel.setRowCount(nopciones);
+       
+        for(int i=0;i<nopciones;i++){
+            Opcion f = opciones.Opciones.get(i);
+            switch (opciones.Opciones.get(i).Tipo) {
+                case "CALL":
+                    TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
+                    TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
+                    TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
+                    TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
+                    TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
+                    TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
+                    TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
+                    TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
+                    break;
+                case "PUT":
+                    TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
+                    TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
+                    TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
+                    TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
+                    TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
+                    TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
+                    TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
+                    TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
+                    break;
+            }
 
+        }
+    }
+        
 }
+
+

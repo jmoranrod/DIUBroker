@@ -107,6 +107,7 @@ public class MEFF_Opciones {
                 try {
                     //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);
                     Thread.sleep(3000);
+                    System.out.println("HOLA HOLITA");
                     trial--;
                 } catch (InterruptedException ex1) {
                     Logger.getLogger(MEFF_Opciones.class.getName()).log(Level.SEVERE, null, ex1);
