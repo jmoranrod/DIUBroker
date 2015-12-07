@@ -160,7 +160,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="Institucion">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;Universidad de Las Palmas de Gran Canaria&lt;br&gt;Escuela de Ingenier&#xed;a Inform&#xe1;tica&lt;br&gt;Dise&#xf1;o de Interfaces de Usuario&lt;br&gt;Nombres del Grupo&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;Universidad de Las Palmas de Gran Canaria&lt;br&gt;Escuela de Ingenier&#xed;a Inform&#xe1;tica&lt;br&gt;Dise&#xf1;o de Interfaces de Usuario&lt;br&gt;H&#xe9;ctor Mac&#xed;as Casado&lt;br&gt;Javier Mor&#xe1;n Rodr&#xed;guez&lt;/html&gt;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="ULPGC">
@@ -281,7 +281,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jScrollPane2" min="-2" pref="98" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="56" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="120" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -415,7 +415,7 @@
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" pref="201" max="32767" attributes="0"/>
+                      <Component id="jScrollPane3" pref="265" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -425,12 +425,7 @@
             <Component class="javax.swing.JComboBox" name="jComboBox1">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
             </Component>
@@ -450,7 +445,7 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="8" rowCount="5">
-                        <Column editable="false" title="Ejerciico" type="java.lang.String"/>
+                        <Column editable="false" title="Ejercicio" type="java.lang.String"/>
                         <Column editable="false" title="Vol. Compra" type="java.lang.String"/>
                         <Column editable="false" title="P Compra" type="java.lang.String"/>
                         <Column editable="false" title="P Venta" type="java.lang.String"/>
@@ -543,7 +538,7 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane4" pref="193" max="32767" attributes="0"/>
+                      <Component id="jScrollPane4" pref="257" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -553,14 +548,15 @@
             <Component class="javax.swing.JComboBox" name="jComboBox2">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
+                </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Cursor Por defecto"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox2ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
@@ -578,7 +574,7 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="8" rowCount="5">
-                        <Column editable="false" title="Ejerciico" type="java.lang.String"/>
+                        <Column editable="false" title="Ejercicio" type="java.lang.String"/>
                         <Column editable="false" title="Vol. Compra" type="java.lang.String"/>
                         <Column editable="false" title="P Compra" type="java.lang.String"/>
                         <Column editable="false" title="P Venta" type="java.lang.String"/>

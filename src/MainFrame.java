@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -32,7 +34,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         Fecha.setEditable(false);
         setDate();
-        Timer timDate = new Timer(1000,new ActionListener(){ // 20 segundos
+        Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
             @Override
             public void actionPerformed(ActionEvent evt){
                 setDate();
@@ -48,6 +50,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         timData.start();
+        
+        //add(fillComboBoxes());
+        //repaint();
         
     }
 
@@ -96,7 +101,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        Institucion.setText("<html>Universidad de Las Palmas de Gran Canaria<br>Escuela de Ingeniería Informática<br>Diseño de Interfaces de Usuario<br>Nombres del Grupo</html>");
+        Institucion.setText("<html>Universidad de Las Palmas de Gran Canaria<br>Escuela de Ingeniería Informática<br>Diseño de Interfaces de Usuario<br>Héctor Macías Casado<br>Javier Morán Rodríguez</html>");
 
         ULPGC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/LOGO_ULPGC.jpg"))); // NOI18N
 
@@ -205,7 +210,7 @@ public class MainFrame extends javax.swing.JFrame {
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaFuturosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 56, Short.MAX_VALUE))
+                .addGap(0, 120, Short.MAX_VALUE))
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -213,8 +218,6 @@ public class MainFrame extends javax.swing.JFrame {
         VentanaOpcionesCALL.setTitle("Opciones IBEX35 - CALL");
         VentanaOpcionesCALL.setToolTipText("Opciones CALL del IBEX35");
         VentanaOpcionesCALL.setVisible(true);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel1.setText("Fecha de Vencimiento:");
 
@@ -227,7 +230,7 @@ public class MainFrame extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Ejerciico", "Vol. Compra", "P Compra", "P Venta", "Vol. Venta", "Último", "Volumen", "Hora(Madrid)"
+                "Ejercicio", "Vol. Compra", "P Compra", "P Venta", "Vol. Venta", "Último", "Volumen", "Hora(Madrid)"
             }
         ) {
             Class[] types = new Class [] {
@@ -266,7 +269,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -276,7 +279,12 @@ public class MainFrame extends javax.swing.JFrame {
         VentanaOpcionesPUT.setToolTipText("Opciones PUT del IBEX35");
         VentanaOpcionesPUT.setVisible(true);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Fecha de Vencimiento:");
 
@@ -289,7 +297,7 @@ public class MainFrame extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Ejerciico", "Vol. Compra", "P Compra", "P Venta", "Vol. Venta", "Último", "Volumen", "Hora(Madrid)"
+                "Ejercicio", "Vol. Compra", "P Compra", "P Venta", "Vol. Venta", "Último", "Volumen", "Hora(Madrid)"
             }
         ) {
             Class[] types = new Class [] {
@@ -328,7 +336,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -446,6 +454,14 @@ public class MainFrame extends javax.swing.JFrame {
             System.exit(0);
     }//GEN-LAST:event_exitActionPerformed
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+        if(jComboBox2.getSelectedIndex() != 0){
+            //System.out.println("FECHA SELECCIONADA: "+jComboBox2.getItemAt(jComboBox2.getSelectedIndex()));
+            refillTable((String) jComboBox2.getItemAt(jComboBox2.getSelectedIndex()));
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -475,6 +491,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }
@@ -510,11 +527,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 
-private MEFF_Contado contado = new MEFF_Contado();
-private MEFF_Futuros futuros = new MEFF_Futuros();
-private MEFF_Opciones opciones = new MEFF_Opciones();
+    private MEFF_Contado contado = new MEFF_Contado();
+    private MEFF_Futuros futuros = new MEFF_Futuros();
+    private MEFF_Opciones opciones = new MEFF_Opciones();
 
-private void setDate(){
+    private void setDate(){
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss ");
         String formatedDate = sdf.format(date);
@@ -522,44 +539,65 @@ private void setDate(){
         Fecha.setText(formatedDate);
     }
 
-private Float toFloat(String texto){
+    private Float toFloat(String texto){
         
         texto = texto.replace(".", "");
         texto = texto.replace(",", ".");
         return Float.valueOf(texto);
     }
 
-private void CollectData(){
+    private void CollectData(){
         
-        //Notificaciones.setText("Recolectando datos ....");   
+        tablaContado();
         
-        // actualiza la tabla de contado
-        contado.getSpot();
-        TableModel model = TablaContado.getModel();
-        TablaContado.setValueAt(contado.Spot, 0, 0);
-        //TablaContado.setValueAt(contado.Diferencia, 0, 1);
-        TablaContado.setValueAt(contado.Anterior, 0, 2);
-        TablaContado.setValueAt(contado.Maximo, 0, 3);
-        TablaContado.setValueAt(contado.Minimo, 0, 4);
-        TablaContado.setValueAt(contado.Fecha, 0, 5);
-        TablaContado.setValueAt(contado.Hora, 0, 6);
+        tablaFuturos();
         
-        Float diferencia = toFloat(contado.Diferencia);
-        if(diferencia > 0){
-            model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
+        tablaOpciones();
+    }
+
+    private void tablaOpciones() {
+        opciones.getOptions();
+        int nopciones = opciones.Opciones.size();
+        //System.out.println(nopciones);
+        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
+        tablemodel = (DefaultTableModel)TablaOpcionesCALL.getModel();
+        tablemodel.setRowCount(nopciones);
+        tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
+        tablemodel.setRowCount(nopciones);
+        fillComboBoxes(); // PONE LAS FECHAS EN LOS CONOBOXES.
+        for(int i = 0; i < nopciones; i++){
+            Opcion f = opciones.Opciones.get(i);
+            switch (opciones.Opciones.get(i).Tipo) {
+                case "CALL":
+                    TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
+                    TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
+                    TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
+                    TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
+                    TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
+                    TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
+                    TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
+                    TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
+                    break;
+                case "PUT":
+                    TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
+                    TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
+                    TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
+                    TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
+                    TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
+                    TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
+                    TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
+                    TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
+                    break;
+            }
+
         }
-        else if(diferencia < 0){
-             model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);   
-        }
-        else{
-            model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
-        }
-        
+    }
+
+    private void tablaFuturos() {
         futuros.getFutures();
         int nfuturos = futuros.Futuros.size();
         DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
         tablemodel.setRowCount(nfuturos);
-       
         
         for(int i=0;i<nfuturos;i++){
             Futuro f = futuros.Futuros.get(i);
@@ -577,17 +615,73 @@ private void CollectData(){
             TablaFuturos.setValueAt(f.Hora, i, 11);
         }
         //Notificaciones.setText("Datos disponibles");
+    }
+
+    private void tablaContado() {
+        //Notificaciones.setText("Recolectando datos ....");
         
+        // actualiza la tabla de contado
+        contado.getSpot();
+        TableModel model = TablaContado.getModel();
+        TablaContado.setValueAt(contado.Spot, 0, 0);
+        //TablaContado.setValueAt(contado.Diferencia, 0, 1);
+        TablaContado.setValueAt(contado.Anterior, 0, 2);
+        TablaContado.setValueAt(contado.Maximo, 0, 3);
+        TablaContado.setValueAt(contado.Minimo, 0, 4);
+        TablaContado.setValueAt(contado.Fecha, 0, 5);
+        TablaContado.setValueAt(contado.Hora, 0, 6);
+        
+        Float diferencia = toFloat(contado.Diferencia);
+        if(diferencia > 0){
+            model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
+        }
+        else if(diferencia < 0){
+            model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
+        }
+        else{
+            model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
+        }
+    }
+
+/*private void fillComboBoxes() {
+    System.out.println("AAAA");
+        String[] fechas = opciones.getFechas().toArray(new String[opciones.getFechas().size()]);
+        JComboBox box = new JComboBox<>(fechas);
+        this.jComboBox1 = box;
+    }*/
+
+    private void fillComboBoxes() {
+        //JComboBox<String> box = new JComboBox<>();
+        //this.jComboBox2 = box;
+        addDatesToBox();
+        //return box;
+    }
+
+    private void addDatesToBox() {
+        for (String fecha : opciones.getFechas()) {
+            //System.out.println("FECHA: "+fecha);
+            jComboBox2.addItem(fecha);
+            jComboBox1.addItem(fecha);
+        }
+    }
+
+    private void refillTable(String date) {
+        tablaOpciones(date);
+    }
+
+    private void tablaOpciones(String date) {
         opciones.getOptions();
         int nopciones = opciones.Opciones.size();
         //System.out.println(nopciones);
+        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
         tablemodel = (DefaultTableModel)TablaOpcionesCALL.getModel();
         tablemodel.setRowCount(nopciones);
         tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
         tablemodel.setRowCount(nopciones);
-       
-        for(int i=0;i<nopciones;i++){
+        fillComboBoxes(); // PONE LAS FECHAS EN LOS CONOBOXES.
+        for(int i = 0; i < nopciones; i++){
             Opcion f = opciones.Opciones.get(i);
+            if(!f.Vencimiento.equals(date)) return;
             switch (opciones.Opciones.get(i).Tipo) {
                 case "CALL":
                     TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
