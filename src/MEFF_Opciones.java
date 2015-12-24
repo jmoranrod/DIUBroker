@@ -37,7 +37,7 @@ public class MEFF_Opciones {
         return Integer.valueOf(texto);
     }
    
-     public boolean getOptions(){
+    public boolean getOptions(){
          
         int trial = ntrials;
         while(trial > 0){
@@ -49,13 +49,10 @@ public class MEFF_Opciones {
                     Elements rows = table.getElementsByTag("tr");
                     if(rows.size()>0){
                          String head=rows.get(0).text();
-//                         System.out.println(head);
                         if(head.substring(0, 4).compareTo("CALL")==0){ 
                             for(int i=3;i<rows.size()-1;i++){
                                 Elements data = rows.get(i).getElementsByTag("td");
-                                //System.out.println(data.size());
                                 if(data.size() == 15){
-                                    //System.out.println(data.size() +  " " + data.get(7).text());
                                     Opcion CALL = new Opcion();
                                     CALL.Tipo = "CALL";
                                     Opcion PUT = new Opcion();
@@ -115,9 +112,9 @@ public class MEFF_Opciones {
         }
         return false;
     }
-
+   
     private void fillComboBoxes(String vencimiento) {
-        if(fechas.isEmpty()) fechas.add("Seleccionar fecha de vencimiento.");
+        if(fechas.isEmpty()) fechas.add("None");
         if(fechas.contains(vencimiento)) return;
         fechas.add(vencimiento); // fechas de vencimiento únicas.
     }

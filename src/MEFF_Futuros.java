@@ -1,6 +1,3 @@
-
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -47,7 +44,7 @@ public class MEFF_Futuros {
                 for(Element table : doc.getElementsByTag("table")){
                     Elements rows = table.getElementsByTag("tr");
                     if(rows.size()>0){
-                         String head=rows.get(0).text();
+                        String head=rows.get(0).text();
                         if(head.substring(0, 11).compareTo("Vencimiento")==0){ 
                             for(int i=1;i<rows.size()-1;i++){
                                 Elements data = rows.get(i).getElementsByTag("td");
@@ -66,7 +63,6 @@ public class MEFF_Futuros {
                                     f.Anterior      = data.get(11).text();
                                     f.Hora          = data.get(12).text();
                                     Futuros.add(f);
-                                    //System.out.println(data.get(12).text());
                                 }
                             }
                             return true;

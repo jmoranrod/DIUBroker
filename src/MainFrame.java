@@ -1,30 +1,15 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Juan
- */
 public class MainFrame extends javax.swing.JFrame {
 
     /**
@@ -33,6 +18,11 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         Fecha.setEditable(false);
+        /* OCULTA LA COLUMNA DEL VENCIMIENTO */
+        TablaOpcionesPUT.getColumnModel().getColumn(8).setMinWidth(0);
+        TablaOpcionesPUT.getColumnModel().getColumn(8).setMaxWidth(0);
+        TablaOpcionesPUT.getColumnModel().getColumn(8).setWidth(0);
+        
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
             @Override
@@ -50,10 +40,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         timData.start();
-        
-        //add(fillComboBoxes());
-        //repaint();
-        
     }
 
     /**
@@ -210,7 +196,7 @@ public class MainFrame extends javax.swing.JFrame {
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaFuturosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 120, Short.MAX_VALUE))
+                .addGap(0, 152, Short.MAX_VALUE))
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -269,7 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -280,9 +266,9 @@ public class MainFrame extends javax.swing.JFrame {
         VentanaOpcionesPUT.setVisible(true);
 
         jComboBox2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
             }
         });
 
@@ -290,21 +276,21 @@ public class MainFrame extends javax.swing.JFrame {
 
         TablaOpcionesPUT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Ejercicio", "Vol. Compra", "P Compra", "P Venta", "Vol. Venta", "Último", "Volumen", "Hora(Madrid)"
+                "Ejercicio", "Vol. Compra", "P Compra", "P Venta", "Vol. Venta", "Último", "Volumen", "Hora(Madrid)", "Vencimiento"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -327,7 +313,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
         );
         VentanaOpcionesPUTLayout.setVerticalGroup(
             VentanaOpcionesPUTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,7 +322,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -349,7 +335,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(EscritorioLayout.createSequentialGroup()
                         .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(EscritorioLayout.createSequentialGroup()
                         .addGap(4, 4, 4)
@@ -454,13 +440,14 @@ public class MainFrame extends javax.swing.JFrame {
             System.exit(0);
     }//GEN-LAST:event_exitActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         // TODO add your handling code here:
-        if(jComboBox2.getSelectedIndex() != 0){
-            //System.out.println("FECHA SELECCIONADA: "+jComboBox2.getItemAt(jComboBox2.getSelectedIndex()));
-            refillTable((String) jComboBox2.getItemAt(jComboBox2.getSelectedIndex()));
-        }
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        
+        String query = jComboBox2.getSelectedItem().toString();
+        
+        filter(query);
+        
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -530,6 +517,7 @@ public class MainFrame extends javax.swing.JFrame {
     private MEFF_Contado contado = new MEFF_Contado();
     private MEFF_Futuros futuros = new MEFF_Futuros();
     private MEFF_Opciones opciones = new MEFF_Opciones();
+    private DefaultTableModel dm;
 
     private void setDate(){
         Date date = new Date();
@@ -540,31 +528,25 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private Float toFloat(String texto){
-        
         texto = texto.replace(".", "");
         texto = texto.replace(",", ".");
         return Float.valueOf(texto);
     }
 
     private void CollectData(){
-        
         tablaContado();
-        
         tablaFuturos();
-        
         tablaOpciones();
+        fillComboBoxes();
     }
 
     private void tablaOpciones() {
         opciones.getOptions();
         int nopciones = opciones.Opciones.size();
-        //System.out.println(nopciones);
-        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
-        tablemodel = (DefaultTableModel)TablaOpcionesCALL.getModel();
+        DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
         tablemodel.setRowCount(nopciones);
         tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
         tablemodel.setRowCount(nopciones);
-        fillComboBoxes(); // PONE LAS FECHAS EN LOS CONOBOXES.
         for(int i = 0; i < nopciones; i++){
             Opcion f = opciones.Opciones.get(i);
             switch (opciones.Opciones.get(i).Tipo) {
@@ -577,6 +559,7 @@ public class MainFrame extends javax.swing.JFrame {
                     TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
                     TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
                     TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
+                    //TablaOpcionesCALL.setValueAt(f.Vencimiento, i, 8);
                     break;
                 case "PUT":
                     TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
@@ -587,6 +570,7 @@ public class MainFrame extends javax.swing.JFrame {
                     TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
                     TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
                     TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
+                    TablaOpcionesPUT.setValueAt(f.Vencimiento, i, 8);
                     break;
             }
 
@@ -624,7 +608,6 @@ public class MainFrame extends javax.swing.JFrame {
         contado.getSpot();
         TableModel model = TablaContado.getModel();
         TablaContado.setValueAt(contado.Spot, 0, 0);
-        //TablaContado.setValueAt(contado.Diferencia, 0, 1);
         TablaContado.setValueAt(contado.Anterior, 0, 2);
         TablaContado.setValueAt(contado.Maximo, 0, 3);
         TablaContado.setValueAt(contado.Minimo, 0, 4);
@@ -643,69 +626,26 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-/*private void fillComboBoxes() {
-    System.out.println("AAAA");
-        String[] fechas = opciones.getFechas().toArray(new String[opciones.getFechas().size()]);
-        JComboBox box = new JComboBox<>(fechas);
-        this.jComboBox1 = box;
-    }*/
-
     private void fillComboBoxes() {
-        //JComboBox<String> box = new JComboBox<>();
-        //this.jComboBox2 = box;
         addDatesToBox();
-        //return box;
     }
 
     private void addDatesToBox() {
         for (String fecha : opciones.getFechas()) {
-            //System.out.println("FECHA: "+fecha);
             jComboBox2.addItem(fecha);
             jComboBox1.addItem(fecha);
         }
     }
 
-    private void refillTable(String date) {
-        tablaOpciones(date);
-    }
-
-    private void tablaOpciones(String date) {
-        opciones.getOptions();
-        int nopciones = opciones.Opciones.size();
-        //System.out.println(nopciones);
-        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
-        tablemodel = (DefaultTableModel)TablaOpcionesCALL.getModel();
-        tablemodel.setRowCount(nopciones);
-        tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
-        tablemodel.setRowCount(nopciones);
-        fillComboBoxes(); // PONE LAS FECHAS EN LOS CONOBOXES.
-        for(int i = 0; i < nopciones; i++){
-            Opcion f = opciones.Opciones.get(i);
-            if(!f.Vencimiento.equals(date)) return;
-            switch (opciones.Opciones.get(i).Tipo) {
-                case "CALL":
-                    TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
-                    TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
-                    TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
-                    TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
-                    TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
-                    TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
-                    TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
-                    TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
-                    break;
-                case "PUT":
-                    TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
-                    TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
-                    TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
-                    TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
-                    TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
-                    TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
-                    TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
-                    TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
-                    break;
-            }
-
-        }
+    private void filter(String query){
+        dm = (DefaultTableModel) TablaOpcionesPUT.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
+        TablaOpcionesPUT.setRowSorter(tr);
+        if(!query.equals("None")){
+            tr.setRowFilter(RowFilter.regexFilter(query));
+        }else{
+            TablaOpcionesPUT.setRowSorter(tr);
+        }  
     }
         
 }
