@@ -43,7 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
         timDate.start();
         
         CollectData();
-        Timer timData = new Timer(180000,new ActionListener(){ // 3 minutos
+        Timer timData = new Timer(30000,new ActionListener(){ // 3 minutos
             @Override
             public void actionPerformed(ActionEvent evt){
                 CollectData();
@@ -208,7 +208,7 @@ public class MainFrame extends javax.swing.JFrame {
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaFuturosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 232, Short.MAX_VALUE))
+                .addGap(0, 244, Short.MAX_VALUE))
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -277,7 +277,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -344,7 +344,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -419,7 +419,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(connectionStatusButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(connectionStatusButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
@@ -619,7 +619,9 @@ public class MainFrame extends javax.swing.JFrame {
         if (status) {
             connectionStatusButton.setBackground(Color.green);
             connectionStatusButton.setEnabled(false);
+            connectionStatusButton.setText("Ok");
         }else{
+            connectionStatusButton.setText("Reconectar");
             connectionStatusButton.setBackground(Color.red);
             connectionStatusButton.setEnabled(true);
         }
@@ -627,41 +629,43 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void tablaOpciones() {
         boolean connectionStatus = opciones.getOptions();
-        
         updateConnectionStatus(connectionStatus);
+        if (connectionStatus) {
+        
+        
+            int nopciones = opciones.Opciones.size();
+            DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
+            tablemodel.setRowCount(nopciones);
+            tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
+            tablemodel.setRowCount(nopciones);
+            for(int i = 0; i < nopciones; i++){
+                Opcion f = opciones.Opciones.get(i);
+                switch (opciones.Opciones.get(i).Tipo) {
+                    case "CALL":
+                        TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
+                        TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
+                        TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
+                        TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
+                        TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
+                        TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
+                        TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
+                        TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
+                        TablaOpcionesCALL.setValueAt(f.Vencimiento, i, 8);
+                        break;
+                    case "PUT":
+                        TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
+                        TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
+                        TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
+                        TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
+                        TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
+                        TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
+                        TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
+                        TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
+                        TablaOpcionesPUT.setValueAt(f.Vencimiento, i, 8);
+                        break;
+                }
 
-        int nopciones = opciones.Opciones.size();
-        DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
-        tablemodel.setRowCount(nopciones);
-        tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
-        tablemodel.setRowCount(nopciones);
-        for(int i = 0; i < nopciones; i++){
-            Opcion f = opciones.Opciones.get(i);
-            switch (opciones.Opciones.get(i).Tipo) {
-                case "CALL":
-                    TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
-                    TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
-                    TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
-                    TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
-                    TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
-                    TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
-                    TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
-                    TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
-                    TablaOpcionesCALL.setValueAt(f.Vencimiento, i, 8);
-                    break;
-                case "PUT":
-                    TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
-                    TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
-                    TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
-                    TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
-                    TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
-                    TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
-                    TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
-                    TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
-                    TablaOpcionesPUT.setValueAt(f.Vencimiento, i, 8);
-                    break;
             }
-
         }
     }
 
@@ -669,24 +673,27 @@ public class MainFrame extends javax.swing.JFrame {
         boolean futures = futuros.getFutures();
         updateConnectionStatus(futures);
         
-        int nfuturos = futuros.Futuros.size();
-        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
-        tablemodel.setRowCount(nfuturos);
+        if (futures) {
         
-        for(int i=0;i<nfuturos;i++){
-            Futuro f = futuros.Futuros.get(i);
-            TablaFuturos.setValueAt(f.Vencimiento, i, 0);
-            TablaFuturos.setValueAt(f.Compra_Vol, i, 1);
-            TablaFuturos.setValueAt(f.Compra_Precio, i, 2);
-            TablaFuturos.setValueAt(f.Venta_Precio, i, 3);
-            TablaFuturos.setValueAt(f.Venta_Vol, i, 4);
-            TablaFuturos.setValueAt(f.Ultimo, i, 5);
-            TablaFuturos.setValueAt(f.Volumen, i, 6);
-            TablaFuturos.setValueAt(f.Apertura, i, 7);
-            TablaFuturos.setValueAt(f.Maximo, i, 8);
-            TablaFuturos.setValueAt(f.Minimo, i, 9);
-            TablaFuturos.setValueAt(f.Anterior, i, 10);
-            TablaFuturos.setValueAt(f.Hora, i, 11);
+            int nfuturos = futuros.Futuros.size();
+            DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
+            tablemodel.setRowCount(nfuturos);
+
+            for(int i=0;i<nfuturos;i++){
+                Futuro f = futuros.Futuros.get(i);
+                TablaFuturos.setValueAt(f.Vencimiento, i, 0);
+                TablaFuturos.setValueAt(f.Compra_Vol, i, 1);
+                TablaFuturos.setValueAt(f.Compra_Precio, i, 2);
+                TablaFuturos.setValueAt(f.Venta_Precio, i, 3);
+                TablaFuturos.setValueAt(f.Venta_Vol, i, 4);
+                TablaFuturos.setValueAt(f.Ultimo, i, 5);
+                TablaFuturos.setValueAt(f.Volumen, i, 6);
+                TablaFuturos.setValueAt(f.Apertura, i, 7);
+                TablaFuturos.setValueAt(f.Maximo, i, 8);
+                TablaFuturos.setValueAt(f.Minimo, i, 9);
+                TablaFuturos.setValueAt(f.Anterior, i, 10);
+                TablaFuturos.setValueAt(f.Hora, i, 11);
+            }
         }
         //Notificaciones.setText("Datos disponibles");
     }
@@ -696,24 +703,26 @@ public class MainFrame extends javax.swing.JFrame {
         // actualiza la tabla de contado
         boolean spot = contado.getSpot();
         updateConnectionStatus(spot);
+        if (spot) {
         
-        TableModel model = TablaContado.getModel();
-        TablaContado.setValueAt(contado.Spot, 0, 0);
-        TablaContado.setValueAt(contado.Anterior, 0, 2);
-        TablaContado.setValueAt(contado.Maximo, 0, 3);
-        TablaContado.setValueAt(contado.Minimo, 0, 4);
-        TablaContado.setValueAt(contado.Fecha, 0, 5);
-        TablaContado.setValueAt(contado.Hora, 0, 6);
-        
-        Float diferencia = toFloat(contado.Diferencia);
-        if(diferencia > 0){
-            model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
-        }
-        else if(diferencia < 0){
-            model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
-        }
-        else{
-            model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
+            TableModel model = TablaContado.getModel();
+            TablaContado.setValueAt(contado.Spot, 0, 0);
+            TablaContado.setValueAt(contado.Anterior, 0, 2);
+            TablaContado.setValueAt(contado.Maximo, 0, 3);
+            TablaContado.setValueAt(contado.Minimo, 0, 4);
+            TablaContado.setValueAt(contado.Fecha, 0, 5);
+            TablaContado.setValueAt(contado.Hora, 0, 6);
+
+            Float diferencia = toFloat(contado.Diferencia);
+            if(diferencia > 0){
+                model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
+            }
+            else if(diferencia < 0){
+                model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
+            }
+            else{
+                model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
+            }
         }
     }
 
