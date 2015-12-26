@@ -1,8 +1,7 @@
-
-
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsoup.Jsoup;
@@ -10,16 +9,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Juan
- */
 public class MEFF_Opciones {
     
     private final String servernameIBEXmini =
@@ -29,8 +18,10 @@ public class MEFF_Opciones {
     private final int timeout=10000; // 10 seconds
     
     public ArrayList<Opcion> Opciones = new ArrayList<>();
+    private List<String> fechas;
    
-    public MEFF_Opciones(){  
+    public MEFF_Opciones(){
+        this.fechas = new LinkedList<>();
     }
     
     private Float toFloat(String texto){
@@ -46,7 +37,7 @@ public class MEFF_Opciones {
         return Integer.valueOf(texto);
     }
    
-     public boolean getOptions(){
+    public boolean getOptions(){
          
         int trial = ntrials;
         while(trial > 0){
@@ -58,13 +49,10 @@ public class MEFF_Opciones {
                     Elements rows = table.getElementsByTag("tr");
                     if(rows.size()>0){
                          String head=rows.get(0).text();
-                         //System.out.println(head);
                         if(head.substring(0, 4).compareTo("CALL")==0){ 
                             for(int i=3;i<rows.size()-1;i++){
                                 Elements data = rows.get(i).getElementsByTag("td");
-                                //System.out.println(data.size());
                                 if(data.size() == 15){
-                                    //System.out.println(data.size() +  " " + data.get(7).text());
                                     Opcion CALL = new Opcion();
                                     CALL.Tipo = "CALL";
                                     Opcion PUT = new Opcion();
@@ -94,9 +82,9 @@ public class MEFF_Opciones {
                                     PUT.Vencimiento   = CALL.Vencimiento;
                                     PUT.Ejercicio     = CALL.Ejercicio;
                                     
+                                    fillComboBoxes(CALL.Vencimiento);
                                     Opciones.add(CALL);
                                     Opciones.add(PUT);
-                                    //System.out.println(data.get(12).text());
                                 }
                                
                             }
@@ -123,5 +111,15 @@ public class MEFF_Opciones {
             }
         }
         return false;
+    }
+   
+    private void fillComboBoxes(String vencimiento) {
+        if(fechas.isEmpty()) fechas.add("None");
+        if(fechas.contains(vencimiento)) return;
+        fechas.add(vencimiento); // fechas de vencimiento únicas.
+    }
+
+    public List<String> getFechas() {
+        return fechas;
     }
 }
