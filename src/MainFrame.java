@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -27,6 +28,10 @@ public class MainFrame extends javax.swing.JFrame {
         TablaOpcionesCALL.getColumnModel().getColumn(8).setMinWidth(0);
         TablaOpcionesCALL.getColumnModel().getColumn(8).setMaxWidth(0);
         TablaOpcionesCALL.getColumnModel().getColumn(8).setWidth(0);
+                
+        /* Button color magic */
+        connectionStatusButton.setContentAreaFilled(false);
+        connectionStatusButton.setOpaque(true);
         
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
@@ -78,6 +83,8 @@ public class MainFrame extends javax.swing.JFrame {
         TablaOpcionesPUT = new javax.swing.JTable();
         topPanel = new javax.swing.JPanel();
         Fecha = new javax.swing.JTextField();
+        connectionStatusButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         BarraMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         exit = new javax.swing.JMenuItem();
@@ -201,7 +208,7 @@ public class MainFrame extends javax.swing.JFrame {
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaFuturosLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 172, Short.MAX_VALUE))
+                .addGap(0, 232, Short.MAX_VALUE))
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -270,7 +277,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -337,7 +344,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -390,21 +397,48 @@ public class MainFrame extends javax.swing.JFrame {
 
         topPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        connectionStatusButton.setEnabled(false);
+        connectionStatusButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                connectionStatusButtonMouseClicked(evt);
+            }
+        });
+        connectionStatusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectionStatusButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Estado de la conexión: ");
+
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
         topPanel.setLayout(topPanelLayout);
         topPanelLayout.setHorizontalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(connectionStatusButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(topPanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
+                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3))
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(connectionStatusButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(topPanelLayout.createSequentialGroup()
+                                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
 
         jMenu1.setText("File");
@@ -473,6 +507,21 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_callComboBoxItemStateChanged
 
+    private void connectionStatusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectionStatusButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_connectionStatusButtonActionPerformed
+
+    private void connectionStatusButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_connectionStatusButtonMouseClicked
+        CollectData();
+        Timer timData = new Timer(180000,new ActionListener(){ // 3 minutos
+            @Override
+            public void actionPerformed(ActionEvent evt){
+                CollectData();
+            }
+        });
+        timData.start();
+    }//GEN-LAST:event_connectionStatusButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -524,10 +573,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JInternalFrame VentanaOpcionesCALL;
     private javax.swing.JInternalFrame VentanaOpcionesPUT;
     private javax.swing.JComboBox callComboBox;
+    private javax.swing.JButton connectionStatusButton;
     private javax.swing.JMenuItem exit;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -563,9 +614,22 @@ public class MainFrame extends javax.swing.JFrame {
         tablaOpciones();
         fillComboBoxes();
     }
+    
+    private void updateConnectionStatus(boolean status){
+        if (status) {
+            connectionStatusButton.setBackground(Color.green);
+            connectionStatusButton.setEnabled(false);
+        }else{
+            connectionStatusButton.setBackground(Color.red);
+            connectionStatusButton.setEnabled(true);
+        }
+    }
 
     private void tablaOpciones() {
-        opciones.getOptions();
+        boolean connectionStatus = opciones.getOptions();
+        
+        updateConnectionStatus(connectionStatus);
+
         int nopciones = opciones.Opciones.size();
         DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
         tablemodel.setRowCount(nopciones);
@@ -602,7 +666,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void tablaFuturos() {
-        futuros.getFutures();
+        boolean futures = futuros.getFutures();
+        updateConnectionStatus(futures);
+        
         int nfuturos = futuros.Futuros.size();
         DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
         tablemodel.setRowCount(nfuturos);
@@ -627,9 +693,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void tablaContado() {
         //Notificaciones.setText("Recolectando datos ....");
-        
         // actualiza la tabla de contado
-        contado.getSpot();
+        boolean spot = contado.getSpot();
+        updateConnectionStatus(spot);
+        
         TableModel model = TablaContado.getModel();
         TablaContado.setValueAt(contado.Spot, 0, 0);
         TablaContado.setValueAt(contado.Anterior, 0, 2);

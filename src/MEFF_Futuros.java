@@ -78,13 +78,14 @@ public class MEFF_Futuros {
                 }
             } catch (IOException ex) {
             //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);   
-                try {
+                return false;
+                /*try {
                     //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);
                     Thread.sleep(3000);
                     trial--;
                 } catch (InterruptedException ex1) {
                     Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+                }*/
             }
         }
         return false;
