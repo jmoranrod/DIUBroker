@@ -7,14 +7,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class WalletWindows extends JInternalFrame {
+public class WalletFrame extends JInternalFrame {
     
     private static int walletNumber = 0;
     private JPanel panel = new JPanel();
     private JTable jTable = new JTable(dataModel());
     private JScrollPane jScrollPane = new JScrollPane(jTable);
 
-    public WalletWindows() {
+    public WalletFrame() {
         super("Wallet #"+(++walletNumber),      // name
                 true,                           // resizable
                 false,                          // closable
@@ -30,7 +30,7 @@ public class WalletWindows extends JInternalFrame {
         
     }
 
-    public WalletWindows(String title) {
+    public WalletFrame(String title) {
         super(title,
                 true,
                 false,

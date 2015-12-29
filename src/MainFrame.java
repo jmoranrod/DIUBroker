@@ -598,6 +598,11 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         tablemodel = (DefaultTableModel) TablaOpcionesPUT.getModel();
         tablemodel.setRowCount(nOpcionesPUT);
         int index = 0, tableIndex = 0;
+        populateCALLTable(index, nopciones, tableIndex, nOpcionesCALL);
+        populatePUTTable(index, nopciones, tableIndex, nOpcionesCALL);
+    }
+
+    private void populateCALLTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
         while((index < nopciones) && (tableIndex < nOpcionesCALL)){
             if(opciones.Opciones.get(index).Tipo.equals("CALL")){
                 TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Ejercicio, tableIndex, 0);
@@ -615,36 +620,26 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
                 index++;
             }
         }
-        
-        /*for(int i = 0; i < nopciones; i++){
-            Opcion f = opciones.Opciones.get(i);
-            switch (opciones.Opciones.get(i).Tipo) {
-                case "CALL":
-                    TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
-                    TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
-                    TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
-                    TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
-                    TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
-                    TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
-                    TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
-                    TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
-                    TablaOpcionesCALL.setValueAt(f.Vencimiento, i, 8);
-                    break;
-                case "PUT":
-                    TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
-                    TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
-                    TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
-                    TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
-                    TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
-                    TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
-                    TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
-                    TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
-                    TablaOpcionesPUT.setValueAt(f.Vencimiento, i, 8);
-                    break;
-                default:
-                    break;
+    }
+
+    private void populatePUTTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
+        while((index < nopciones) && (tableIndex < nOpcionesCALL)){
+            if(opciones.Opciones.get(index).Tipo.equals("PUT")){
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Ejercicio, tableIndex, 0);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Compra_Vol, tableIndex, 1);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Compra_Precio, tableIndex, 2);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Venta_Precio, tableIndex, 3);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Venta_Vol, tableIndex, 4);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Ultimo, tableIndex, 5);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Volumen, tableIndex, 6);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Hora, tableIndex, 7);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Vencimiento, tableIndex, 8);
+                tableIndex++;
+                index++;
+            }else{
+                index++;
             }
-        }*/
+        }
     }
     
 /*
@@ -770,7 +765,7 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
 
     private void createWallet() {
         //System.out.println("Creando cartera...");
-        WalletWindows wallet = new WalletWindows();
+        WalletFrame wallet = new WalletFrame();
         //System.out.println(wallet);
         wallet.setVisible(true);
         Escritorio.add(wallet);
