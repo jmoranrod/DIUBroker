@@ -1,6 +1,9 @@
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -52,15 +55,34 @@ public class WalletFrame extends JInternalFrame {
     }
 
     private void createColumns(DefaultTableModel tm) {
-        tm.addColumn("Nº de Opciones");
-        tm.addColumn("Tipo de Opción");
+        tm.addColumn("Nº. Opciones");
+        tm.addColumn("T. Opción");
         tm.addColumn("F. Vencimiento");
         tm.addColumn("P. Ejercicio");
         tm.addColumn("F. Entrada a Cartera");
         tm.addColumn("P. Compra de mercado");
     }
     
-    
+    public void addOptionsToTable(List<Opcion> optionList){
+        DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
+        tablemodel.setRowCount(optionList.size() - 1);
+        if(optionList.isEmpty()) return;
+        for (Opcion opcion : optionList) {
+            jTable.setValueAt("1", 0, 0); //comprobar en la lista si coinciden 2 opciones
+            jTable.setValueAt(opcion.Tipo, 0, 1);
+            jTable.setValueAt(opcion.Vencimiento, 0, 2);
+            jTable.setValueAt(opcion.Ejercicio, 0, 3);
+            jTable.setValueAt(getDate(), 0, 4);
+            jTable.setValueAt(opcion.Compra_Precio, 0, 5);
+        }
+    }
+
+    private String getDate() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String formatedDate = sdf.format(date);
+        return formatedDate;
+    }
     
     
 }

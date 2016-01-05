@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -34,14 +36,34 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         TablaOpcionesCALL.getColumnModel().getColumn(8).setMinWidth(0);
         TablaOpcionesCALL.getColumnModel().getColumn(8).setMaxWidth(0);
         TablaOpcionesCALL.getColumnModel().getColumn(8).setWidth(0);
-        /* Añade un listerner para obtener el contenido de las filas. */
+        // Añade un listerner para obtener el contenido de las filas. 
+        
         TablaOpcionesPUT.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                System.out.println(TablaOpcionesPUT.getValueAt(TablaOpcionesPUT.getSelectedRow(), TablaOpcionesPUT.getSelectedColumn()).toString());
+                //System.out.println(TablaOpcionesPUT.getValueAt(TablaOpcionesPUT.getSelectedRow(), TablaOpcionesPUT.getSelectedColumn()).toString());
+                getSelectedRow(TablaOpcionesPUT.getSelectedRow());
+            }
+
+            private void getSelectedRow(int selectedRow) {
+                Opcion opcion = new Opcion();
+                opcion.Ejercicio = TablaOpcionesPUT.getValueAt(selectedRow, 0).toString();
+                opcion.Tipo = "PUT";
+                opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
+                opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
+                optionsToWallet.add(opcion);
+                addToSelectedWallet(opcion);
+                //System.out.println(optionsToWallet.get(0).Ejercicio);
+            }
+
+            private void addToSelectedWallet(Opcion opcion) {
+                for (Wallet wallet : walletList) {
+                    wallet.addOption(opcion);
+                }
             }
         });
+        
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
             @Override
@@ -565,6 +587,8 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
     private MEFF_Contado contado = new MEFF_Contado();
     private MEFF_Futuros futuros = new MEFF_Futuros();
     private MEFF_Opciones opciones = new MEFF_Opciones();
+    private List<Opcion> optionsToWallet = new LinkedList<>();
+    private List<Wallet> walletList = new LinkedList<>();
     private DefaultTableModel dm;
 
     private void setDate(){
@@ -599,7 +623,7 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         tablemodel.setRowCount(nOpcionesPUT);
         int index = 0, tableIndex = 0;
         populateCALLTable(index, nopciones, tableIndex, nOpcionesCALL);
-        populatePUTTable(index, nopciones, tableIndex, nOpcionesCALL);
+        populatePUTTable(index, nopciones, tableIndex, nOpcionesPUT);
     }
 
     private void populateCALLTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
@@ -622,8 +646,8 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         }
     }
 
-    private void populatePUTTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
-        while((index < nopciones) && (tableIndex < nOpcionesCALL)){
+    private void populatePUTTable(int index, int nopciones, int tableIndex, int nOpcionesPUT) {
+        while((index < nopciones) && (tableIndex < nOpcionesPUT)){
             if(opciones.Opciones.get(index).Tipo.equals("PUT")){
                 TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Ejercicio, tableIndex, 0);
                 TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Compra_Vol, tableIndex, 1);
@@ -765,12 +789,14 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
 
     private void createWallet() {
         //System.out.println("Creando cartera...");
-        WalletFrame wallet = new WalletFrame();
+        //WalletFrame wallet = new WalletFrame();
+        Wallet wallet = new Wallet();
         //System.out.println(wallet);
-        wallet.setVisible(true);
-        Escritorio.add(wallet);
+        wallet.getFrame().setVisible(true);
+        Escritorio.add(wallet.getFrame());
+        walletList.add(wallet);
         try {
-            wallet.setSelected(true);
+            wallet.getFrame().setSelected(true);
         } catch (Exception e) {
         }
         
