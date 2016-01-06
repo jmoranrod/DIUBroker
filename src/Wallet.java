@@ -16,6 +16,13 @@ public class Wallet {
         this.frame = new WalletFrame();
     }
 
+    public Wallet(String name) {
+        this.name = name;
+        this.options = new LinkedList<>();
+        this.value = 0d;
+        this.frame = new WalletFrame(name);
+    }
+
     public WalletFrame getFrame() {
         return frame;
     }
@@ -30,8 +37,8 @@ public class Wallet {
     
     public void addOption(Opcion option){
         this.options.add(option);
+        this.value += toFloat(option.Compra_Precio);
         this.frame.addOptionsToTable(options);
-//        this.value += Double.parseDouble(option.Compra_Precio);
     }
     
     public List<Opcion> getOptions() {
@@ -48,6 +55,12 @@ public class Wallet {
 
     public void setValue(double value) {
         this.value = value;
+    }
+    
+    private Float toFloat(String texto){
+        texto = texto.replace(".", "");
+        texto = texto.replace(",", ".");
+        return Float.valueOf(texto);
     }
     
 }

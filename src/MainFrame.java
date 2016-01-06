@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.Timer;
@@ -17,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class MainFrame extends JFrame/* implements ActionListener*/ {
+public class MainFrame extends JFrame {
 
     /**
      * Creates new form MainFrame
@@ -27,40 +26,16 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         /*createWallet.setActionCommand("createWallet");
         createWallet.addActionListener(this);*/
         Fecha.setEditable(false);
-        
-        /* OCULTA LAS COLUMNA DEL VENCIMIENTO */
-        TablaOpcionesPUT.getColumnModel().getColumn(8).setMinWidth(0);
-        TablaOpcionesPUT.getColumnModel().getColumn(8).setMaxWidth(0);
-        TablaOpcionesPUT.getColumnModel().getColumn(8).setWidth(0);
-        
-        TablaOpcionesCALL.getColumnModel().getColumn(8).setMinWidth(0);
-        TablaOpcionesCALL.getColumnModel().getColumn(8).setMaxWidth(0);
-        TablaOpcionesCALL.getColumnModel().getColumn(8).setWidth(0);
-        // Añade un listerner para obtener el contenido de las filas. 
-        
+        addPUTOptionToWallet.setEnabled(false);
+        hideColumns();
+        // Añade un listener para obtener el contenido de las filas. 
         TablaOpcionesPUT.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                //System.out.println(TablaOpcionesPUT.getValueAt(TablaOpcionesPUT.getSelectedRow(), TablaOpcionesPUT.getSelectedColumn()).toString());
-                getSelectedRow(TablaOpcionesPUT.getSelectedRow());
-            }
-
-            private void getSelectedRow(int selectedRow) {
-                Opcion opcion = new Opcion();
-                opcion.Ejercicio = TablaOpcionesPUT.getValueAt(selectedRow, 0).toString();
-                opcion.Tipo = "PUT";
-                opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
-                opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
-                optionsToWallet.add(opcion);
-                addToSelectedWallet(opcion);
-                //System.out.println(optionsToWallet.get(0).Ejercicio);
-            }
-
-            private void addToSelectedWallet(Opcion opcion) {
-                for (Wallet wallet : walletList) {
-                    wallet.addOption(opcion);
-                }
+                if(TablaOpcionesPUT.getSelectedRow() <= 0)
+                    addPUTOptionToWallet.setEnabled(false);
+                else
+                    addPUTOptionToWallet.setEnabled(true);
             }
         });
         
@@ -77,11 +52,21 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         Timer timData = new Timer(180000,new ActionListener(){ // 3 minutos
             @Override
             public void actionPerformed(ActionEvent evt){
-                //revisar que pasa aquí cuando refresca los datos.
                 CollectData();
             }
         });
         timData.start();
+    }
+
+    private void hideColumns() {
+        /* OCULTA LAS COLUMNAS DEL VENCIMIENTO */
+        TablaOpcionesPUT.getColumnModel().getColumn(8).setMinWidth(0);
+        TablaOpcionesPUT.getColumnModel().getColumn(8).setMaxWidth(0);
+        TablaOpcionesPUT.getColumnModel().getColumn(8).setWidth(0);
+        
+        TablaOpcionesCALL.getColumnModel().getColumn(8).setMinWidth(0);
+        TablaOpcionesCALL.getColumnModel().getColumn(8).setMaxWidth(0);
+        TablaOpcionesCALL.getColumnModel().getColumn(8).setWidth(0);
     }
 
     /**
@@ -93,6 +78,11 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        addToWalletDialog = new javax.swing.JDialog();
+        walletSelector = new javax.swing.JComboBox();
+        walletLabel = new javax.swing.JLabel();
+        acceptButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
         Escritorio = new javax.swing.JDesktopPane();
         infoPanel = new javax.swing.JPanel();
         Institucion = new javax.swing.JLabel();
@@ -113,6 +103,7 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         TablaOpcionesPUT = new javax.swing.JTable();
+        addPUTOptionToWallet = new javax.swing.JButton();
         topPanel = new javax.swing.JPanel();
         Fecha = new javax.swing.JTextField();
         BarraMenu = new javax.swing.JMenuBar();
@@ -121,6 +112,55 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         editMenu = new javax.swing.JMenu();
         walletMenu = new javax.swing.JMenu();
         createWallet = new javax.swing.JMenuItem();
+
+        addToWalletDialog.setTitle("Añadir a Opción a Cartera");
+        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 233));
+        addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 233));
+
+        walletLabel.setText("Seleccionar cartera:");
+
+        acceptButton.setText("Aceptar");
+        acceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acceptButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout addToWalletDialogLayout = new javax.swing.GroupLayout(addToWalletDialog.getContentPane());
+        addToWalletDialog.getContentPane().setLayout(addToWalletDialogLayout);
+        addToWalletDialogLayout.setHorizontalGroup(
+            addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addToWalletDialogLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(acceptButton)
+                    .addComponent(walletLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(walletSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton))
+                .addGap(29, 29, 29))
+        );
+        addToWalletDialogLayout.setVerticalGroup(
+            addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addToWalletDialogLayout.createSequentialGroup()
+                .addGap(106, 106, 106)
+                .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(walletSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(walletLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(acceptButton)
+                    .addComponent(cancelButton))
+                .addGap(27, 27, 27))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Cartera de Opciones del IBEX35");
@@ -238,7 +278,7 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -308,7 +348,7 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
                     .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -356,12 +396,21 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         });
         jScrollPane4.setViewportView(TablaOpcionesPUT);
 
+        addPUTOptionToWallet.setText("Añadir a cartera");
+        addPUTOptionToWallet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPUTOptionToWalletActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout VentanaOpcionesPUTLayout = new javax.swing.GroupLayout(VentanaOpcionesPUT.getContentPane());
         VentanaOpcionesPUT.getContentPane().setLayout(VentanaOpcionesPUTLayout);
         VentanaOpcionesPUTLayout.setHorizontalGroup(
             VentanaOpcionesPUTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, VentanaOpcionesPUTLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(addPUTOptionToWallet)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,11 +420,13 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         VentanaOpcionesPUTLayout.setVerticalGroup(
             VentanaOpcionesPUTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaOpcionesPUTLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
                 .addGroup(VentanaOpcionesPUTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(addPUTOptionToWallet)
+                    .addComponent(jLabel2)
+                    .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -415,7 +466,7 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -517,6 +568,21 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         createWallet();
     }//GEN-LAST:event_createWalletActionPerformed
 
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        this.addToWalletDialog.setVisible(false);
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Estamos en ello Willy");
+    }//GEN-LAST:event_acceptButtonActionPerformed
+
+    private void addPUTOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPUTOptionToWalletActionPerformed
+        // TODO add your handling code here:
+        this.addToWalletDialog.setVisible(true);
+    }//GEN-LAST:event_addPUTOptionToWalletActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -567,7 +633,11 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
     private javax.swing.JInternalFrame VentanaFuturos;
     private javax.swing.JInternalFrame VentanaOpcionesCALL;
     private javax.swing.JInternalFrame VentanaOpcionesPUT;
+    private javax.swing.JButton acceptButton;
+    private javax.swing.JButton addPUTOptionToWallet;
+    private javax.swing.JDialog addToWalletDialog;
     private javax.swing.JComboBox callComboBox;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem createWallet;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exit;
@@ -581,7 +651,9 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JComboBox putComboBox;
     private javax.swing.JPanel topPanel;
+    private javax.swing.JLabel walletLabel;
     private javax.swing.JMenu walletMenu;
+    private javax.swing.JComboBox walletSelector;
     // End of variables declaration//GEN-END:variables
 
     private MEFF_Contado contado = new MEFF_Contado();
@@ -809,7 +881,22 @@ public class MainFrame extends JFrame/* implements ActionListener*/ {
         }
         return value;
     }
+    
+    private void getSelectedRow(int selectedRow) {
+        Opcion opcion = new Opcion();
+        opcion.Ejercicio = TablaOpcionesPUT.getValueAt(selectedRow, 0).toString();
+        opcion.Tipo = "PUT";
+        opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
+        opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
+        optionsToWallet.add(opcion);
+        addToSelectedWallet(opcion);
+        //System.out.println(optionsToWallet.get(0).Ejercicio);
+    }
+
+    private void addToSelectedWallet(Opcion opcion) {
+        for (Wallet wallet : walletList) {
+            wallet.addOption(opcion);
+        }
+    }
 
 }
-
-
