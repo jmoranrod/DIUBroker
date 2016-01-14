@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -13,7 +14,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import persistence.WalletLoader;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -59,7 +59,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void testWallets() {
-        WalletLoader wallet  = new WalletLoader("asd");
+        Wallet wallet  = new Wallet("asd");
         ArrayList list = new ArrayList<String>();
         list.add("sd1");
         list.add("sd2");
@@ -72,10 +72,27 @@ public class MainFrame extends javax.swing.JFrame {
         list2.add("sdb2");
         wallet.writeToFile(list2);
         
-        List listaa = wallet.readFromFile();
-        System.out.println(listaa.get(0));
+        System.out.println("SIIIU");
+        printWallet(wallet);
+        
+    }
+    
+    private void printWallet(Wallet wallet){
+        List walletItems = wallet.readFromFile();
+        int walletSize = walletItems.size();
+        for (int i = 0; i < walletSize; i++) {
+            System.out.println(walletItems.get(i));
+        }
     }
 
+    private void createWalletFrame(Wallet wallet){
+        List walletItems = wallet.readFromFile();
+        int walletSize = walletItems.size();
+        for (int i = 0; i < walletSize; i++) {
+            System.out.println(walletItems.get(i));
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -616,6 +633,8 @@ public class MainFrame extends javax.swing.JFrame {
     private MEFF_Contado contado = new MEFF_Contado();
     private MEFF_Futuros futuros = new MEFF_Futuros();
     private MEFF_Opciones opciones = new MEFF_Opciones();
+    private List<Opcion> optionsToWallet = new LinkedList<>();
+    private List<Wallet> walletList = new LinkedList<>();
     private DefaultTableModel dm;
 
     private void setDate(){
@@ -650,103 +669,109 @@ public class MainFrame extends javax.swing.JFrame {
             connectionStatusButton.setEnabled(true);
         }
     }
+    
+    
 
     private void tablaOpciones() {
-        boolean connectionStatus = opciones.getOptions();
-        updateConnectionStatus(connectionStatus);
-        if (connectionStatus) {
-        
-        
-            int nopciones = opciones.Opciones.size();
-            DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
-            tablemodel.setRowCount(nopciones);
-            tablemodel = (DefaultTableModel)TablaOpcionesPUT.getModel();
-            tablemodel.setRowCount(nopciones);
-            for(int i = 0; i < nopciones; i++){
-                Opcion f = opciones.Opciones.get(i);
-                switch (opciones.Opciones.get(i).Tipo) {
-                    case "CALL":
-                        TablaOpcionesCALL.setValueAt(f.Ejercicio, i, 0);
-                        TablaOpcionesCALL.setValueAt(f.Compra_Vol, i, 1);
-                        TablaOpcionesCALL.setValueAt(f.Compra_Precio, i, 2);
-                        TablaOpcionesCALL.setValueAt(f.Venta_Precio, i, 3);
-                        TablaOpcionesCALL.setValueAt(f.Venta_Vol, i, 4);
-                        TablaOpcionesCALL.setValueAt(f.Ultimo, i, 5);
-                        TablaOpcionesCALL.setValueAt(f.Volumen, i, 6);
-                        TablaOpcionesCALL.setValueAt(f.Hora, i, 7);
-                        TablaOpcionesCALL.setValueAt(f.Vencimiento, i, 8);
-                        break;
-                    case "PUT":
-                        TablaOpcionesPUT.setValueAt(f.Ejercicio, i, 0);
-                        TablaOpcionesPUT.setValueAt(f.Compra_Vol, i, 1);
-                        TablaOpcionesPUT.setValueAt(f.Compra_Precio, i, 2);
-                        TablaOpcionesPUT.setValueAt(f.Venta_Precio, i, 3);
-                        TablaOpcionesPUT.setValueAt(f.Venta_Vol, i, 4);
-                        TablaOpcionesPUT.setValueAt(f.Ultimo, i, 5); 
-                        TablaOpcionesPUT.setValueAt(f.Volumen, i, 6);
-                        TablaOpcionesPUT.setValueAt(f.Hora, i, 7);
-                        TablaOpcionesPUT.setValueAt(f.Vencimiento, i, 8);
-                        break;
-                }
+        opciones.getOptions();
+        int nOpcionesCALL = calculateOptions("CALL");
+        int nOpcionesPUT = calculateOptions("PUT");
+        int nopciones = opciones.Opciones.size();
+        DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
+        tablemodel.setRowCount(nOpcionesCALL);
+        tablemodel = (DefaultTableModel) TablaOpcionesPUT.getModel();
+        tablemodel.setRowCount(nOpcionesPUT);
+        int index = 0, tableIndex = 0;
+        populateCALLTable(index, nopciones, tableIndex, nOpcionesCALL);
+        populatePUTTable(index, nopciones, tableIndex, nOpcionesPUT);
+    }
+    
+    private void populateCALLTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
+        while((index < nopciones) && (tableIndex < nOpcionesCALL)){
+            if(opciones.Opciones.get(index).Tipo.equals("CALL")){
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Ejercicio, tableIndex, 0);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Compra_Vol, tableIndex, 1);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Compra_Precio, tableIndex, 2);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Venta_Precio, tableIndex, 3);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Venta_Vol, tableIndex, 4);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Ultimo, tableIndex, 5);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Volumen, tableIndex, 6);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Hora, tableIndex, 7);
+                TablaOpcionesCALL.setValueAt(opciones.Opciones.get(index).Vencimiento, tableIndex, 8);
+                tableIndex++;
+                index++;
+            }else{
+                index++;
+            }
+        }
+    }
 
+    private void populatePUTTable(int index, int nopciones, int tableIndex, int nOpcionesPUT) {
+        while((index < nopciones) && (tableIndex < nOpcionesPUT)){
+            if(opciones.Opciones.get(index).Tipo.equals("PUT")){
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Ejercicio, tableIndex, 0);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Compra_Vol, tableIndex, 1);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Compra_Precio, tableIndex, 2);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Venta_Precio, tableIndex, 3);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Venta_Vol, tableIndex, 4);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Ultimo, tableIndex, 5);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Volumen, tableIndex, 6);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Hora, tableIndex, 7);
+                TablaOpcionesPUT.setValueAt(opciones.Opciones.get(index).Vencimiento, tableIndex, 8);
+                tableIndex++;
+                index++;
+            }else{
+                index++;
             }
         }
     }
 
     private void tablaFuturos() {
-        boolean futures = futuros.getFutures();
-        updateConnectionStatus(futures);
+        futuros.getFutures();
+        int nfuturos = futuros.Futuros.size();
+        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
+        tablemodel.setRowCount(nfuturos);
         
-        if (futures) {
-        
-            int nfuturos = futuros.Futuros.size();
-            DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
-            tablemodel.setRowCount(nfuturos);
-
-            for(int i=0;i<nfuturos;i++){
-                Futuro f = futuros.Futuros.get(i);
-                TablaFuturos.setValueAt(f.Vencimiento, i, 0);
-                TablaFuturos.setValueAt(f.Compra_Vol, i, 1);
-                TablaFuturos.setValueAt(f.Compra_Precio, i, 2);
-                TablaFuturos.setValueAt(f.Venta_Precio, i, 3);
-                TablaFuturos.setValueAt(f.Venta_Vol, i, 4);
-                TablaFuturos.setValueAt(f.Ultimo, i, 5);
-                TablaFuturos.setValueAt(f.Volumen, i, 6);
-                TablaFuturos.setValueAt(f.Apertura, i, 7);
-                TablaFuturos.setValueAt(f.Maximo, i, 8);
-                TablaFuturos.setValueAt(f.Minimo, i, 9);
-                TablaFuturos.setValueAt(f.Anterior, i, 10);
-                TablaFuturos.setValueAt(f.Hora, i, 11);
-            }
+        for(int i=0;i<nfuturos;i++){
+            Futuro f = futuros.Futuros.get(i);
+            TablaFuturos.setValueAt(f.Vencimiento, i, 0);
+            TablaFuturos.setValueAt(f.Compra_Vol, i, 1);
+            TablaFuturos.setValueAt(f.Compra_Precio, i, 2);
+            TablaFuturos.setValueAt(f.Venta_Precio, i, 3);
+            TablaFuturos.setValueAt(f.Venta_Vol, i, 4);
+            TablaFuturos.setValueAt(f.Ultimo, i, 5);
+            TablaFuturos.setValueAt(f.Volumen, i, 6);
+            TablaFuturos.setValueAt(f.Apertura, i, 7);
+            TablaFuturos.setValueAt(f.Maximo, i, 8);
+            TablaFuturos.setValueAt(f.Minimo, i, 9);
+            TablaFuturos.setValueAt(f.Anterior, i, 10);
+            TablaFuturos.setValueAt(f.Hora, i, 11);
         }
         //Notificaciones.setText("Datos disponibles");
     }
 
     private void tablaContado() {
         //Notificaciones.setText("Recolectando datos ....");
-        // actualiza la tabla de contado
-        boolean spot = contado.getSpot();
-        updateConnectionStatus(spot);
-        if (spot) {
         
-            TableModel model = TablaContado.getModel();
-            TablaContado.setValueAt(contado.Spot, 0, 0);
-            TablaContado.setValueAt(contado.Anterior, 0, 2);
-            TablaContado.setValueAt(contado.Maximo, 0, 3);
-            TablaContado.setValueAt(contado.Minimo, 0, 4);
-            TablaContado.setValueAt(contado.Fecha, 0, 5);
-            TablaContado.setValueAt(contado.Hora, 0, 6);
-
-            Float diferencia = toFloat(contado.Diferencia);
-            if(diferencia > 0){
-                model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
-            }
-            else if(diferencia < 0){
-                model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
-            }
-            else{
-                model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
-            }
+        // actualiza la tabla de contado
+        contado.getSpot();
+        TableModel model = TablaContado.getModel();
+        TablaContado.setValueAt(contado.Spot, 0, 0);
+        TablaContado.setValueAt(contado.Anterior, 0, 2);
+        TablaContado.setValueAt(contado.Maximo, 0, 3);
+        TablaContado.setValueAt(contado.Minimo, 0, 4);
+        TablaContado.setValueAt(contado.Fecha, 0, 5);
+        TablaContado.setValueAt(contado.Hora, 0, 6);
+        
+        Float diferencia = toFloat(contado.Diferencia);
+        if(diferencia > 0){
+            model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
+        }
+        else if(diferencia < 0){
+            model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
+        }
+        else{
+            model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
         }
     }
 
@@ -771,7 +796,47 @@ public class MainFrame extends javax.swing.JFrame {
             table.setRowSorter(tr);
         }  
     }
+    
+    private void createWallet() {
+        //System.out.println("Creando cartera...");
+        //WalletFrame wallet = new WalletFrame();
+        Wallet wallet = new Wallet();
+        //System.out.println(wallet);
+        wallet.getFrame().setVisible(true);
+        Escritorio.add(wallet.getFrame());
+        walletList.add(wallet);
+        try {
+            wallet.getFrame().setSelected(true);
+        } catch (Exception e) {
+        }
         
+    }
+    
+    private int calculateOptions(String tipo) {
+        int value = 0;
+        for (Opcion opcion : opciones.Opciones) {
+            if(opcion.Tipo.equals(tipo)) value++;
+        }
+        return value;
+    }
+    
+    private void getSelectedRow(int selectedRow) {
+        Opcion opcion = new Opcion();
+        opcion.Ejercicio = TablaOpcionesPUT.getValueAt(selectedRow, 0).toString();
+        opcion.Tipo = "PUT";
+        opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
+        opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
+        optionsToWallet.add(opcion);
+        addToSelectedWallet(opcion);
+        //System.out.println(optionsToWallet.get(0).Ejercicio);
+    }
+        
+    private void addToSelectedWallet(Opcion opcion) {
+        for (Wallet wallet : walletList) {
+            wallet.addOption(opcion);
+        }
+    }
+    
 }
 
 
