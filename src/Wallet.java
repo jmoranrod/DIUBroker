@@ -30,7 +30,7 @@ public class Wallet {
         this.options = new LinkedList<>();
         this.value = 0d;
         this.frame = new WalletFrame(walletName);
-        this.file = Paths.get(walletName+".txt");
+        this.file = Paths.get(walletName +".dbr");
     }
 
     public WalletFrame getFrame() {

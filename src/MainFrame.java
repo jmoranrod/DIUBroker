@@ -2,11 +2,14 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -24,7 +27,6 @@ public class MainFrame extends JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        testWallets();
         
         
         initComponents();
@@ -46,6 +48,9 @@ public class MainFrame extends JFrame {
         
         connectionStatusButton.setContentAreaFilled(false);
         connectionStatusButton.setOpaque(true);
+        testWallets();
+        fillCombobox();
+        
         
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
@@ -83,6 +88,8 @@ public class MainFrame extends JFrame {
         
         System.out.println("SIIIU");
         printWallet(wallet);
+        int nWallets = findWallets().length;
+        System.out.println(nWallets);
         
     }
     
@@ -93,6 +100,17 @@ public class MainFrame extends JFrame {
             System.out.println(walletItems.get(i));
         }
     }
+        
+    private File[] findWallets(){
+        File f = new File(".");
+        File[] matchingFiles = f.listFiles(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".dbr");
+            }
+        });
+        return matchingFiles;
+    }
+
     
     private void updateConnectionStatus(boolean status){
         if (status) {
@@ -326,7 +344,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -474,7 +492,7 @@ public class MainFrame extends JFrame {
                     .addComponent(jLabel2)
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -637,6 +655,8 @@ public class MainFrame extends JFrame {
     private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
         // TODO add your handling code here:
         System.out.println("Estamos en ello Willy");
+        
+        
     }//GEN-LAST:event_acceptButtonActionPerformed
 
     private void addPUTOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPUTOptionToWalletActionPerformed
@@ -986,6 +1006,22 @@ public class MainFrame extends JFrame {
         for (Wallet wallet : walletList) {
             wallet.addOption(opcion);
         }
+    }
+
+    private void fillCombobox() {
+        File[] wallets = findWallets();
+        int nWallets = findWallets().length;
+        String[] existinWallets = new String[nWallets];
+        
+        for (int i = 0; i < nWallets; i++) {
+            String completeName = wallets[i].getName();
+            String name = completeName.substring(0, completeName.length()-4);
+            walletSelector.addItem(name);
+            //existinWallets[i] = wallets[i].getName();
+        }
+        //walletSelector = new JComboBox(existinWallets);
+        //walletSelector.setSelectedIndex(0);
+        //walletSelector.repaint();
     }
 
 }
