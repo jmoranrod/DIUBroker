@@ -64,13 +64,14 @@ public class MEFF_Contado {
                     Logger.getLogger(MEFF_Contado.class.getName()).log(Level.SEVERE, null, ex1);
                 } 
             } catch (IOException ex) {
-                try {
+                return false;
+                /*try {
                     //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);
                     Thread.sleep(3000);
                     trial--;
                 } catch (InterruptedException ex1) {
                     Logger.getLogger(MEFF_Contado.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+                }*/
             }
         }
         return false;

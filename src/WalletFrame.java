@@ -64,8 +64,9 @@ public class WalletFrame extends JInternalFrame {
     }
     
     public void addOptionsToTable(List<Opcion> optionList){
+        System.out.println("Estoy aqui");
         DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
-        tablemodel.setRowCount(optionList.size() - 1);
+        tablemodel.setRowCount(optionList.size());
         if(optionList.isEmpty()) return;
         for (Opcion opcion : optionList) {
             jTable.setValueAt("1", 0, 0); //comprobar en la lista si coinciden 2 opciones

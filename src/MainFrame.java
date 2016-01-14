@@ -1,7 +1,11 @@
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,11 +21,12 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class MainFrame extends JFrame {
-
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
+        
+        
         initComponents();
         /*createWallet.setActionCommand("createWallet");
         createWallet.addActionListener(this);*/
@@ -32,12 +37,18 @@ public class MainFrame extends JFrame {
         TablaOpcionesPUT.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(TablaOpcionesPUT.getSelectedRow() <= 0)
+                if(TablaOpcionesPUT.getSelectedRow() < 0)
                     addPUTOptionToWallet.setEnabled(false);
                 else
                     addPUTOptionToWallet.setEnabled(true);
             }
         });
+        
+        connectionStatusButton.setContentAreaFilled(false);
+        connectionStatusButton.setOpaque(true);
+        testWallets();
+        fillCombobox();
+        
         
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
@@ -56,6 +67,59 @@ public class MainFrame extends JFrame {
             }
         });
         timData.start();
+    }
+    
+    
+    private void testWallets() {
+        Wallet wallet  = new Wallet("asd");
+        ArrayList list = new ArrayList<String>();
+        list.add("sd1");
+        list.add("sd2");
+        list.add("sd3");
+        list.add("sd4");
+        wallet.writeToFile(list);
+        
+        ArrayList list2 = new ArrayList<String>();
+        list2.add("sdb1");
+        list2.add("sdb2");
+        wallet.writeToFile(list2);
+        
+        System.out.println("SIIIU");
+        printWallet(wallet);
+        int nWallets = findWallets().length;
+        System.out.println(nWallets);
+        
+    }
+    
+    private void printWallet(Wallet wallet){
+        List walletItems = wallet.readFromFile();
+        int walletSize = walletItems.size();
+        for (int i = 0; i < walletSize; i++) {
+            System.out.println(walletItems.get(i));
+        }
+    }
+        
+    private File[] findWallets(){
+        File f = new File(".");
+        File[] matchingFiles = f.listFiles(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".dbr");
+            }
+        });
+        return matchingFiles;
+    }
+
+    
+    private void updateConnectionStatus(boolean status){
+        if (status) {
+            connectionStatusButton.setBackground(Color.green);
+            connectionStatusButton.setEnabled(false);
+            connectionStatusButton.setText("Ok");
+        }else{
+            connectionStatusButton.setText("Reconectar");
+            connectionStatusButton.setBackground(Color.red);
+            connectionStatusButton.setEnabled(true);
+        }
     }
 
     private void hideColumns() {
@@ -83,6 +147,11 @@ public class MainFrame extends JFrame {
         walletLabel = new javax.swing.JLabel();
         acceptButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        createWalletDialog = new javax.swing.JDialog();
+        walletNameLabel = new javax.swing.JLabel();
+        walletNameTextField = new javax.swing.JTextField();
+        acceptWalletNameButton = new javax.swing.JButton();
+        cancelWalletNameButton = new javax.swing.JButton();
         Escritorio = new javax.swing.JDesktopPane();
         infoPanel = new javax.swing.JPanel();
         Institucion = new javax.swing.JLabel();
@@ -106,6 +175,7 @@ public class MainFrame extends JFrame {
         addPUTOptionToWallet = new javax.swing.JButton();
         topPanel = new javax.swing.JPanel();
         Fecha = new javax.swing.JTextField();
+        connectionStatusButton = new javax.swing.JButton();
         BarraMenu = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exit = new javax.swing.JMenuItem();
@@ -114,7 +184,6 @@ public class MainFrame extends JFrame {
         createWallet = new javax.swing.JMenuItem();
 
         addToWalletDialog.setTitle("Añadir a Opción a Cartera");
-        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 233));
         addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 233));
 
         walletLabel.setText("Seleccionar cartera:");
@@ -160,6 +229,59 @@ public class MainFrame extends JFrame {
                     .addComponent(acceptButton)
                     .addComponent(cancelButton))
                 .addGap(27, 27, 27))
+        );
+
+        createWalletDialog.setTitle("Crear cartera");
+        createWalletDialog.setMaximumSize(new java.awt.Dimension(420, 160));
+        createWalletDialog.setMinimumSize(new java.awt.Dimension(420, 160));
+
+        walletNameLabel.setText("Introducir nombre de cartera:");
+
+        acceptWalletNameButton.setText("Aceptar");
+        acceptWalletNameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acceptWalletNameButtonActionPerformed(evt);
+            }
+        });
+
+        cancelWalletNameButton.setText("Cancelar");
+        cancelWalletNameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelWalletNameButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout createWalletDialogLayout = new javax.swing.GroupLayout(createWalletDialog.getContentPane());
+        createWalletDialog.getContentPane().setLayout(createWalletDialogLayout);
+        createWalletDialogLayout.setHorizontalGroup(
+            createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(createWalletDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(acceptWalletNameButton)
+                    .addComponent(walletNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(createWalletDialogLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(walletNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(25, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createWalletDialogLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelWalletNameButton)
+                        .addGap(78, 78, 78))))
+        );
+        createWalletDialogLayout.setVerticalGroup(
+            createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(createWalletDialogLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(walletNameLabel)
+                    .addComponent(walletNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(acceptWalletNameButton)
+                    .addComponent(cancelWalletNameButton))
+                .addGap(21, 21, 21))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -278,7 +400,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -348,7 +470,7 @@ public class MainFrame extends JFrame {
                     .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -426,7 +548,7 @@ public class MainFrame extends JFrame {
                     .addComponent(jLabel2)
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -466,7 +588,7 @@ public class MainFrame extends JFrame {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -476,21 +598,34 @@ public class MainFrame extends JFrame {
 
         topPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        connectionStatusButton.setEnabled(false);
+        connectionStatusButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                connectionStatusButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
         topPanel.setLayout(topPanelLayout);
         topPanelLayout.setHorizontalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(connectionStatusButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topPanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(connectionStatusButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         fileMenu.setText("File");
@@ -565,7 +700,8 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_callComboBoxItemStateChanged
 
     private void createWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createWalletActionPerformed
-        createWallet();
+        createWalletDialog.setVisible(true);
+        //createWallet();
     }//GEN-LAST:event_createWalletActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -575,13 +711,45 @@ public class MainFrame extends JFrame {
 
     private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
         // TODO add your handling code here:
-        System.out.println("Estamos en ello Willy");
+        for (Wallet wallet : walletList) {
+            if(wallet.getName().equals(walletSelector.getSelectedItem().toString())){
+                getSelectedRow(TablaOpcionesPUT.getSelectedRow());
+                wallet.addOptionList(optionsToWallet);
+                wallet.writeToFile(optionsToWallet);
+            }
+        }
     }//GEN-LAST:event_acceptButtonActionPerformed
 
     private void addPUTOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPUTOptionToWalletActionPerformed
         // TODO add your handling code here:
         this.addToWalletDialog.setVisible(true);
     }//GEN-LAST:event_addPUTOptionToWalletActionPerformed
+
+    private void connectionStatusButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_connectionStatusButtonMouseClicked
+        CollectData();
+        Timer timData = new Timer(180000,new ActionListener(){ // 3 minutos
+            @Override
+            public void actionPerformed(ActionEvent evt){
+                CollectData();
+            }
+        });
+        timData.start();
+    }//GEN-LAST:event_connectionStatusButtonMouseClicked
+
+    private void cancelWalletNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelWalletNameButtonActionPerformed
+        // TODO add your handling code here:
+        createWalletDialog.setVisible(false);
+    }//GEN-LAST:event_cancelWalletNameButtonActionPerformed
+
+    private void acceptWalletNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptWalletNameButtonActionPerformed
+        // TODO add your handling code here:
+        if(!walletNameTextField.getText().isEmpty()){
+            createWallet(walletNameTextField.getText());
+        }else{
+            JOptionPane.showMessageDialog(this, "Nombre de la cartera inválido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        createWalletDialog.setVisible(false);
+    }//GEN-LAST:event_acceptWalletNameButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -634,11 +802,15 @@ public class MainFrame extends JFrame {
     private javax.swing.JInternalFrame VentanaOpcionesCALL;
     private javax.swing.JInternalFrame VentanaOpcionesPUT;
     private javax.swing.JButton acceptButton;
+    private javax.swing.JButton acceptWalletNameButton;
     private javax.swing.JButton addPUTOptionToWallet;
     private javax.swing.JDialog addToWalletDialog;
     private javax.swing.JComboBox callComboBox;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JButton cancelWalletNameButton;
+    private javax.swing.JButton connectionStatusButton;
     private javax.swing.JMenuItem createWallet;
+    private javax.swing.JDialog createWalletDialog;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exit;
     private javax.swing.JMenu fileMenu;
@@ -653,13 +825,15 @@ public class MainFrame extends JFrame {
     private javax.swing.JPanel topPanel;
     private javax.swing.JLabel walletLabel;
     private javax.swing.JMenu walletMenu;
+    private javax.swing.JLabel walletNameLabel;
+    private javax.swing.JTextField walletNameTextField;
     private javax.swing.JComboBox walletSelector;
     // End of variables declaration//GEN-END:variables
 
     private MEFF_Contado contado = new MEFF_Contado();
     private MEFF_Futuros futuros = new MEFF_Futuros();
     private MEFF_Opciones opciones = new MEFF_Opciones();
-    private List<Opcion> optionsToWallet = new LinkedList<>();
+    private ArrayList optionsToWallet = new ArrayList();
     private List<Wallet> walletList = new LinkedList<>();
     private DefaultTableModel dm;
 
@@ -685,17 +859,23 @@ public class MainFrame extends JFrame {
     }
     
     private void tablaOpciones() {
-        opciones.getOptions();
-        int nOpcionesCALL = calculateOptions("CALL");
-        int nOpcionesPUT = calculateOptions("PUT");
-        int nopciones = opciones.Opciones.size();
-        DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
-        tablemodel.setRowCount(nOpcionesCALL);
-        tablemodel = (DefaultTableModel) TablaOpcionesPUT.getModel();
-        tablemodel.setRowCount(nOpcionesPUT);
-        int index = 0, tableIndex = 0;
-        populateCALLTable(index, nopciones, tableIndex, nOpcionesCALL);
-        populatePUTTable(index, nopciones, tableIndex, nOpcionesPUT);
+        boolean connectionStatus = opciones.getOptions();
+        updateConnectionStatus(connectionStatus);
+        
+        if (connectionStatus) {
+            opciones.getOptions();
+            int nOpcionesCALL = calculateOptions("CALL");
+            int nOpcionesPUT = calculateOptions("PUT");
+            int nopciones = opciones.Opciones.size();
+            DefaultTableModel tablemodel = (DefaultTableModel) TablaOpcionesCALL.getModel();
+            tablemodel.setRowCount(nOpcionesCALL);
+            tablemodel = (DefaultTableModel) TablaOpcionesPUT.getModel();
+            tablemodel.setRowCount(nOpcionesPUT);
+            int index = 0, tableIndex = 0;
+            populateCALLTable(index, nopciones, tableIndex, nOpcionesCALL);
+            populatePUTTable(index, nopciones, tableIndex, nOpcionesPUT);
+            
+        }
     }
 
     private void populateCALLTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
@@ -778,51 +958,61 @@ public class MainFrame extends JFrame {
     }
 */
     private void tablaFuturos() {
-        futuros.getFutures();
-        int nfuturos = futuros.Futuros.size();
-        DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
-        tablemodel.setRowCount(nfuturos);
         
-        for(int i=0;i<nfuturos;i++){
-            Futuro f = futuros.Futuros.get(i);
-            TablaFuturos.setValueAt(f.Vencimiento, i, 0);
-            TablaFuturos.setValueAt(f.Compra_Vol, i, 1);
-            TablaFuturos.setValueAt(f.Compra_Precio, i, 2);
-            TablaFuturos.setValueAt(f.Venta_Precio, i, 3);
-            TablaFuturos.setValueAt(f.Venta_Vol, i, 4);
-            TablaFuturos.setValueAt(f.Ultimo, i, 5);
-            TablaFuturos.setValueAt(f.Volumen, i, 6);
-            TablaFuturos.setValueAt(f.Apertura, i, 7);
-            TablaFuturos.setValueAt(f.Maximo, i, 8);
-            TablaFuturos.setValueAt(f.Minimo, i, 9);
-            TablaFuturos.setValueAt(f.Anterior, i, 10);
-            TablaFuturos.setValueAt(f.Hora, i, 11);
+        boolean futures = futuros.getFutures();
+        updateConnectionStatus(futures);
+        
+        if (futures) {
+            int nfuturos = futuros.Futuros.size();
+            DefaultTableModel tablemodel = (DefaultTableModel)TablaFuturos.getModel();
+            tablemodel.setRowCount(nfuturos);
+
+            for(int i=0;i<nfuturos;i++){
+                Futuro f = futuros.Futuros.get(i);
+                TablaFuturos.setValueAt(f.Vencimiento, i, 0);
+                TablaFuturos.setValueAt(f.Compra_Vol, i, 1);
+                TablaFuturos.setValueAt(f.Compra_Precio, i, 2);
+                TablaFuturos.setValueAt(f.Venta_Precio, i, 3);
+                TablaFuturos.setValueAt(f.Venta_Vol, i, 4);
+                TablaFuturos.setValueAt(f.Ultimo, i, 5);
+                TablaFuturos.setValueAt(f.Volumen, i, 6);
+                TablaFuturos.setValueAt(f.Apertura, i, 7);
+                TablaFuturos.setValueAt(f.Maximo, i, 8);
+                TablaFuturos.setValueAt(f.Minimo, i, 9);
+                TablaFuturos.setValueAt(f.Anterior, i, 10);
+                TablaFuturos.setValueAt(f.Hora, i, 11);
+            }
+            //Notificaciones.setText("Datos disponibles");
         }
-        //Notificaciones.setText("Datos disponibles");
+
     }
 
     private void tablaContado() {
-        //Notificaciones.setText("Recolectando datos ....");
-        
-        // actualiza la tabla de contado
-        contado.getSpot();
-        TableModel model = TablaContado.getModel();
-        TablaContado.setValueAt(contado.Spot, 0, 0);
-        TablaContado.setValueAt(contado.Anterior, 0, 2);
-        TablaContado.setValueAt(contado.Maximo, 0, 3);
-        TablaContado.setValueAt(contado.Minimo, 0, 4);
-        TablaContado.setValueAt(contado.Fecha, 0, 5);
-        TablaContado.setValueAt(contado.Hora, 0, 6);
-        
-        Float diferencia = toFloat(contado.Diferencia);
-        if(diferencia > 0){
-            model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
-        }
-        else if(diferencia < 0){
-            model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
-        }
-        else{
-            model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
+        boolean spot = contado.getSpot();
+        updateConnectionStatus(spot);
+        if (spot) {
+            //Notificaciones.setText("Recolectando datos ....");
+
+            // actualiza la tabla de contado
+            contado.getSpot();
+            TableModel model = TablaContado.getModel();
+            TablaContado.setValueAt(contado.Spot, 0, 0);
+            TablaContado.setValueAt(contado.Anterior, 0, 2);
+            TablaContado.setValueAt(contado.Maximo, 0, 3);
+            TablaContado.setValueAt(contado.Minimo, 0, 4);
+            TablaContado.setValueAt(contado.Fecha, 0, 5);
+            TablaContado.setValueAt(contado.Hora, 0, 6);
+
+            Float diferencia = toFloat(contado.Diferencia);
+            if(diferencia > 0){
+                model.setValueAt("<html><font color='green'>"+diferencia+"</font></html>", 0, 1);
+            }
+            else if(diferencia < 0){
+                model.setValueAt("<html><font color='red'>"+diferencia+"</font></html>", 0, 1);
+            }
+            else{
+                model.setValueAt("<html><font color='black'>"+diferencia+"</font></html>", 0, 1);
+            }
         }
     }
 
@@ -836,18 +1026,7 @@ public class MainFrame extends JFrame {
             callComboBox.addItem(fecha);
         }
     }
-/*
-    private void filter(String query, JTable table){
-        dm = (DefaultTableModel) table.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
-        table.setRowSorter(tr);
-        if(!query.equals("None")){
-            tr.setRowFilter(RowFilter.regexFilter(query));
-        }else{
-            table.setRowSorter(tr);
-        }  
-    }*/
-    
+
     private void filter(String query, JTable table){
         dm = (DefaultTableModel) table.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
@@ -859,14 +1038,14 @@ public class MainFrame extends JFrame {
         }  
     }    
 
-    private void createWallet() {
-        //System.out.println("Creando cartera...");
+    private void createWallet(String name) {
         //WalletFrame wallet = new WalletFrame();
-        Wallet wallet = new Wallet();
+        Wallet wallet = new Wallet(name);
         //System.out.println(wallet);
         wallet.getFrame().setVisible(true);
         Escritorio.add(wallet.getFrame());
         walletList.add(wallet);
+        fillCombobox();
         try {
             wallet.getFrame().setSelected(true);
         } catch (Exception e) {
@@ -888,15 +1067,31 @@ public class MainFrame extends JFrame {
         opcion.Tipo = "PUT";
         opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
         opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
-        optionsToWallet.add(opcion);
-        addToSelectedWallet(opcion);
+        optionsToWallet.add(opcion.toString());
+        //addToSelectedWallet(opcion);
         //System.out.println(optionsToWallet.get(0).Ejercicio);
     }
-
+/*
     private void addToSelectedWallet(Opcion opcion) {
         for (Wallet wallet : walletList) {
             wallet.addOption(opcion);
         }
+    }
+*/
+    private void fillCombobox() {
+        File[] wallets = findWallets();
+        int nWallets = findWallets().length;
+        String[] existinWallets = new String[nWallets];
+        walletSelector.removeAllItems();
+        for (int i = 0; i < nWallets; i++) {
+            String completeName = wallets[i].getName();
+            String name = completeName.substring(0, completeName.length()-4);
+            walletSelector.addItem(name);
+            //existinWallets[i] = wallets[i].getName();
+        }
+        //walletSelector = new JComboBox(existinWallets);
+        //walletSelector.setSelectedIndex(0);
+        //walletSelector.repaint();
     }
 
 }

@@ -1,11 +1,20 @@
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Wallet {
     
-    private String name;
+    private String walletName;
+    private Path file;
     private double value;
     private List<Opcion> options;
     private WalletFrame frame;
@@ -16,11 +25,20 @@ public class Wallet {
         this.frame = new WalletFrame();
     }
 
-    public Wallet(String name) {
-        this.name = name;
+    public Wallet(String walletName) {
+        this.walletName = walletName;
         this.options = new LinkedList<>();
         this.value = 0d;
-        this.frame = new WalletFrame(name);
+        this.frame = new WalletFrame(walletName);
+        this.file = Paths.get(walletName +".dbr");
+        
+        initFile(walletName);
+    }
+
+    private void initFile(String walletName1) {
+        ArrayList list = new ArrayList();
+        list.add(walletName1);
+        writeToFile(list);
     }
 
     public WalletFrame getFrame() {
@@ -28,16 +46,22 @@ public class Wallet {
     }
         
     public String getName() {
-        return name;
+        return walletName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.walletName = name;
     }
     
-    public void addOption(Opcion option){
+    public void addOptionList(List<Opcion> list){
+        for (Opcion opcion : list) {
+            addOption(opcion);
+        }
+    }
+    
+    private void addOption(Opcion option){
         this.options.add(option);
-        this.value += toFloat(option.Compra_Precio);
+        //this.value += toFloat(option.Compra_Precio);
         this.frame.addOptionsToTable(options);
     }
     
@@ -61,6 +85,47 @@ public class Wallet {
         texto = texto.replace(".", "");
         texto = texto.replace(",", ".");
         return Float.valueOf(texto);
+    }
+    
+    public boolean writeToFile(ArrayList lines){
+        try {
+            if (Files.exists(file)){
+                Files.write(file, lines, StandardOpenOption.APPEND);
+                return true;
+            }else{
+                Files.write(file, lines, StandardOpenOption.CREATE_NEW);
+                return true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Wallet.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean writeToFile(String line){
+        ArrayList lines = new ArrayList();
+        lines.add(line);
+        try {
+            if (Files.exists(file)){
+                Files.write(file, lines, StandardOpenOption.APPEND);
+                return true;
+            }else{
+                Files.write(file, lines, StandardOpenOption.CREATE_NEW);
+                return true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Wallet.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public List readFromFile(){
+        try {
+            return Files.readAllLines(file);
+        } catch (IOException ex) {
+            Logger.getLogger(Wallet.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
 }
