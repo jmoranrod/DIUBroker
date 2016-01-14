@@ -3,7 +3,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.Timer;
@@ -11,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import persistence.WalletLoader;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -18,6 +21,9 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        testWallets();
+        
+        
         initComponents();
         Fecha.setEditable(false);
         /* OCULTA LAS COLUMNA DEL VENCIMIENTO */
@@ -50,6 +56,24 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         timData.start();
+    }
+
+    private void testWallets() {
+        WalletLoader wallet  = new WalletLoader("asd");
+        ArrayList list = new ArrayList<String>();
+        list.add("sd1");
+        list.add("sd2");
+        list.add("sd3");
+        list.add("sd4");
+        wallet.writeToFile(list);
+        
+        ArrayList list2 = new ArrayList<String>();
+        list2.add("sdb1");
+        list2.add("sdb2");
+        wallet.writeToFile(list2);
+        
+        List listaa = wallet.readFromFile();
+        System.out.println(listaa.get(0));
     }
 
     /**
