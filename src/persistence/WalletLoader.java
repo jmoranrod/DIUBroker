@@ -27,8 +27,6 @@ public class WalletLoader {
                 Files.write(file, lines, StandardOpenOption.APPEND);
                 return true;
             }else{
-                System.out.println("HOLAAA");
-                //Files.createFile(file);
                 Files.write(file, lines, StandardOpenOption.CREATE_NEW);
                 return true;
             }
