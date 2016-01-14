@@ -99,7 +99,7 @@ public class MEFF_Opciones {
                 } catch (InterruptedException ex1) {
                     Logger.getLogger(MEFF_Opciones.class.getName()).log(Level.SEVERE, null, ex1);
                 }
-            }catch (IOException ex) {
+            } catch (IOException ex) {
             //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);   
                 return false;
                 /*try {

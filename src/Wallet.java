@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class Wallet {
     
     private String walletName;
@@ -17,11 +19,6 @@ public class Wallet {
     private List<Opcion> options;
     private WalletFrame frame;
 
-    /*public Wallet(String walletName) {
-        this.walletName = walletName;
-        file = Paths.get(walletName+".txt");
-    }*/
-    
     public Wallet() {
         this.options = new LinkedList<>();
         this.value = 0d;
@@ -35,7 +32,7 @@ public class Wallet {
         this.frame = new WalletFrame(walletName);
         this.file = Paths.get(walletName+".txt");
     }
-    
+
     public WalletFrame getFrame() {
         return frame;
     }
