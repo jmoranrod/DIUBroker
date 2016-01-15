@@ -16,6 +16,7 @@ public class WalletFrame extends JInternalFrame {
     private JPanel panel = new JPanel();
     private JTable jTable = new JTable(dataModel());
     private JScrollPane jScrollPane = new JScrollPane(jTable);
+    private int tableIndex;
 
     public WalletFrame() {
         super("Wallet #"+(++walletNumber),      // name
@@ -63,27 +64,33 @@ public class WalletFrame extends JInternalFrame {
         tm.addColumn("P. Compra de mercado");
     }
     
-    public void addOptionsToTable(int optionsNumber, Opcion opcion){
+    public void addOptionsToTable(int rowCount, Opcion opcion){
         //System.out.println("Estoy aqui");
         DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
-        tablemodel.setRowCount(optionsNumber);
+        tablemodel.setRowCount(rowCount);
         if(opcion == null) return;
-        jTable.setValueAt(1, optionsNumber - 1, 0); //comprobar en la lista si coinciden 2 opciones
-        jTable.setValueAt(opcion.Tipo, optionsNumber - 1, 1);
-        jTable.setValueAt(opcion.Vencimiento, optionsNumber - 1, 2);
-        jTable.setValueAt(opcion.Ejercicio, optionsNumber - 1, 3);
-        jTable.setValueAt(getDate(), optionsNumber - 1, 4);
-        jTable.setValueAt(opcion.Compra_Precio, optionsNumber - 1, 5);
-        /*        
-        for (Opcion opcion : optionList) {
-            jTable.setValueAt(1, 0, 0); //comprobar en la lista si coinciden 2 opciones
-            jTable.setValueAt(opcion.Tipo, 0, 1);
-            jTable.setValueAt(opcion.Vencimiento, 0, 2);
-            jTable.setValueAt(opcion.Ejercicio, 0, 3);
-            jTable.setValueAt(getDate(), 0, 4);
-            jTable.setValueAt(opcion.Compra_Precio, 0, 5);
-        }
-        */
+        jTable.setValueAt(opcion.cantidad, rowCount - 1, 0); //comprobar en la lista si coinciden 2 opciones
+        jTable.setValueAt(opcion.Tipo, rowCount - 1, 1);
+        jTable.setValueAt(opcion.Vencimiento, rowCount - 1, 2);
+        jTable.setValueAt(opcion.Ejercicio, rowCount - 1, 3);
+        jTable.setValueAt(getDate(), rowCount - 1, 4);
+        jTable.setValueAt(opcion.Compra_Precio, rowCount - 1, 5);
+
+    }
+    
+    public void addOptionsToTable(int rowCount, WalletOption opcion){
+        System.out.println("rowCount: "+rowCount);
+        DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
+        tablemodel.setRowCount(rowCount);
+        if(opcion == null) return;
+        jTable.setValueAt(opcion.getCantidad(), tableIndex, 0); //comprobar en la lista si coinciden 2 opciones
+        jTable.setValueAt(opcion.getTipo(), tableIndex, 1);
+        jTable.setValueAt(opcion.getVencimiento(), tableIndex, 2);
+        jTable.setValueAt(opcion.getEjercicio(), tableIndex, 3);
+        jTable.setValueAt(getDate(), tableIndex, 4);
+        jTable.setValueAt(opcion.getPrecioCompra(), tableIndex, 5);
+        System.out.println(jTable.getModel().getValueAt(0, 0));
+        tableIndex++;
     }
 
     private String getDate() {

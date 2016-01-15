@@ -17,6 +17,7 @@ public class Wallet {
     private Path file;
     private double value;
     private List<Opcion> options;
+    private List<WalletOption> wOptions;
     private WalletFrame frame;
 
     public Wallet() {
@@ -44,6 +45,8 @@ public class Wallet {
     public WalletFrame getFrame() {
         return frame;
     }
+    
+    
         
     public String getName() {
         return walletName;
@@ -58,12 +61,20 @@ public class Wallet {
             addOption(opcion);
         }
     }
+
+    public void updateFrame(int aux, WalletOption opcion) {
+        System.out.println("AUUUUUUUUUUUUU "+aux);
+        wOptions.add(opcion);
+        this.frame.addOptionsToTable(wOptions.size(), opcion);
+    }
+    
+    
     
     public void addOption(Opcion option){
         this.options.add(option);
         //this.value += toFloat(option.Compra_Precio);
         this.frame.addOptionsToTable(getOptions().size(), option);
-        writeToFile(option.toWallet(1));
+        //writeToFile(option.toWallet(1));
     }
     
     public List<Opcion> getOptions() {
