@@ -64,7 +64,12 @@ public class WalletFrame extends JInternalFrame {
     }
     
     public void addOptionsToTable(List<Opcion> optionList){
-        System.out.println("Estoy aqui");
+        for (Opcion optionList1 : optionList) {
+            System.out.println(optionList1.toString());
+        }
+        
+        
+        System.out.println("Estoy aqui EN WALLETFRAME");
         DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
         tablemodel.setRowCount(optionList.size());
         if(optionList.isEmpty()) return;
