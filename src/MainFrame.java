@@ -750,7 +750,12 @@ public class MainFrame extends JFrame {
                 opcion.setCantidad(numberOfOptions.getText());
                 //wallet.addOption(opcion);
                 WalletOption option = new WalletOption(numberOfOptions.getText(), opcion.Tipo, opcion.Vencimiento, opcion.Ejercicio, opcion.getDate(), opcion.Compra_Precio);
-                wallet.updateFrame(wallet.getOptions().size() + 1, option);
+                //wallet.updateFrame(wallet.getOptions().size() + 1, option);
+                if(wallet.getOptions().isEmpty()){
+                    wallet.updateFrame(1, option);
+                }else{
+                    wallet.updateFrame(wallet.getOptions().size(), option);
+                }
                 wallet.writeToFile(option.toString()); //REVISAR
             }
         }

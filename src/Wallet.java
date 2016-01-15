@@ -22,6 +22,7 @@ public class Wallet {
 
     public Wallet() {
         this.options = new LinkedList<>();
+        this.wOptions = new LinkedList<>();
         this.value = 0d;
         this.frame = new WalletFrame();
     }
@@ -29,6 +30,7 @@ public class Wallet {
     public Wallet(String walletName) {
         this.walletName = walletName;
         this.options = new LinkedList<>();
+        this.wOptions = new LinkedList<>();
         this.value = 0d;
         this.frame = new WalletFrame(walletName);
         this.file = Paths.get(walletName +".dbr");
