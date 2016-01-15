@@ -1,5 +1,4 @@
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,9 +35,9 @@ public class Wallet {
         initFile(walletName);
     }
 
-    private void initFile(String walletName) {
+    private void initFile(String walletName1) {
         ArrayList list = new ArrayList();
-        list.add(walletName);
+        list.add(walletName1);
         writeToFile(list);
     }
 
@@ -60,12 +59,11 @@ public class Wallet {
         }
     }
     
-    private void addOption(Opcion option){
+    public void addOption(Opcion option){
         this.options.add(option);
-        if (option.Compra_Precio != null) {
-            this.value += toFloat(option.Compra_Precio);
-        }
-        this.frame.addOptionsToTable(options);
+        //this.value += toFloat(option.Compra_Precio);
+        this.frame.addOptionsToTable(getOptions().size(), option);
+        writeToFile(option.toWallet(1));
     }
     
     public List<Opcion> getOptions() {
@@ -108,7 +106,6 @@ public class Wallet {
     public boolean writeToFile(String line){
         ArrayList lines = new ArrayList();
         lines.add(line);
-        
         try {
             if (Files.exists(file)){
                 Files.write(file, lines, StandardOpenOption.APPEND);

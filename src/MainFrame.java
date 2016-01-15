@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +21,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class MainFrame extends JFrame {
-    private String opType;
     /**
      * Creates new form MainFrame
      */
@@ -35,6 +32,9 @@ public class MainFrame extends JFrame {
         createWallet.addActionListener(this);*/
         Fecha.setEditable(false);
         addPUTOptionToWallet.setEnabled(false);
+        this.setLocationRelativeTo(null);
+        addToWalletDialog.setLocationRelativeTo(null);
+        createWalletDialog.setLocationRelativeTo(null);
         hideColumns();
         // Añade un listener para obtener el contenido de las filas. 
         TablaOpcionesPUT.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -51,7 +51,7 @@ public class MainFrame extends JFrame {
         connectionStatusButton.setOpaque(true);
         //testWallets();
         fillCombobox();
-        readWallets();
+        
         
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
@@ -73,6 +73,58 @@ public class MainFrame extends JFrame {
     }
     
     
+    private void testWallets() {
+        Wallet wallet  = new Wallet("asd");
+        ArrayList list = new ArrayList<String>();
+        list.add("sd1");
+        list.add("sd2");
+        list.add("sd3");
+        list.add("sd4");
+        wallet.writeToFile(list);
+        
+        ArrayList list2 = new ArrayList<String>();
+        list2.add("sdb1");
+        list2.add("sdb2");
+        wallet.writeToFile(list2);
+        
+        System.out.println("SIIIU");
+        printWallet(wallet);
+        int nWallets = findWallets().length;
+        System.out.println(nWallets);
+        
+    }
+    
+    private void printWallet(Wallet wallet){
+        List walletItems = wallet.readFromFile();
+        int walletSize = walletItems.size();
+        for (int i = 0; i < walletSize; i++) {
+            System.out.println(walletItems.get(i));
+        }
+    }
+        
+    private File[] findWallets(){
+        File f = new File(".");
+        File[] matchingFiles = f.listFiles(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".dbr");
+            }
+        });
+        return matchingFiles;
+    }
+
+    
+    private void updateConnectionStatus(boolean status){
+        if (status) {
+            connectionStatusButton.setBackground(Color.green);
+            connectionStatusButton.setEnabled(false);
+            connectionStatusButton.setText("Ok");
+        }else{
+            connectionStatusButton.setText("Reconectar");
+            connectionStatusButton.setBackground(Color.red);
+            connectionStatusButton.setEnabled(true);
+        }
+    }
+
     private void hideColumns() {
         /* OCULTA LAS COLUMNAS DEL VENCIMIENTO */
         TablaOpcionesPUT.getColumnModel().getColumn(8).setMinWidth(0);
@@ -103,7 +155,6 @@ public class MainFrame extends JFrame {
         walletNameTextField = new javax.swing.JTextField();
         acceptWalletNameButton = new javax.swing.JButton();
         cancelWalletNameButton = new javax.swing.JButton();
-        fileChooser = new javax.swing.JFileChooser();
         Escritorio = new javax.swing.JDesktopPane();
         infoPanel = new javax.swing.JPanel();
         Institucion = new javax.swing.JLabel();
@@ -119,7 +170,6 @@ public class MainFrame extends JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TablaOpcionesCALL = new javax.swing.JTable();
-        addCallOptionToWallet = new javax.swing.JButton();
         VentanaOpcionesPUT = new javax.swing.JInternalFrame();
         putComboBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
@@ -135,10 +185,11 @@ public class MainFrame extends JFrame {
         editMenu = new javax.swing.JMenu();
         walletMenu = new javax.swing.JMenu();
         createWallet = new javax.swing.JMenuItem();
-        openWalletButton = new javax.swing.JMenuItem();
 
         addToWalletDialog.setTitle("Añadir a Opción a Cartera");
-        addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 233));
+        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 118));
+        addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 118));
+        addToWalletDialog.setResizable(false);
 
         walletLabel.setText("Seleccionar cartera:");
 
@@ -174,11 +225,11 @@ public class MainFrame extends JFrame {
         addToWalletDialogLayout.setVerticalGroup(
             addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(addToWalletDialogLayout.createSequentialGroup()
-                .addGap(106, 106, 106)
+                .addGap(28, 28, 28)
                 .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(walletSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(walletLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                    .addComponent(walletLabel)
+                    .addComponent(walletSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(acceptButton)
                     .addComponent(cancelButton))
@@ -186,8 +237,8 @@ public class MainFrame extends JFrame {
         );
 
         createWalletDialog.setTitle("Crear cartera");
-        createWalletDialog.setMaximumSize(new java.awt.Dimension(420, 160));
-        createWalletDialog.setMinimumSize(new java.awt.Dimension(420, 160));
+        createWalletDialog.setMaximumSize(new java.awt.Dimension(330, 119));
+        createWalletDialog.setMinimumSize(new java.awt.Dimension(330, 119));
 
         walletNameLabel.setText("Introducir nombre de cartera:");
 
@@ -211,27 +262,28 @@ public class MainFrame extends JFrame {
             createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createWalletDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(acceptWalletNameButton)
-                    .addComponent(walletNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(walletNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createWalletDialogLayout.createSequentialGroup()
+                        .addComponent(acceptWalletNameButton)
+                        .addGap(31, 31, 31)))
                 .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(createWalletDialogLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(walletNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(walletNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createWalletDialogLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                         .addComponent(cancelWalletNameButton)
-                        .addGap(78, 78, 78))))
+                        .addGap(58, 58, 58))))
         );
         createWalletDialogLayout.setVerticalGroup(
             createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createWalletDialogLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(walletNameLabel)
                     .addComponent(walletNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(createWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(acceptWalletNameButton)
                     .addComponent(cancelWalletNameButton))
@@ -354,7 +406,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -405,21 +457,12 @@ public class MainFrame extends JFrame {
             TablaOpcionesCALL.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        addCallOptionToWallet.setText("Añadir a cartera");
-        addCallOptionToWallet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addCallOptionToWalletActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout VentanaOpcionesCALLLayout = new javax.swing.GroupLayout(VentanaOpcionesCALL.getContentPane());
         VentanaOpcionesCALL.getContentPane().setLayout(VentanaOpcionesCALLLayout);
         VentanaOpcionesCALLLayout.setHorizontalGroup(
             VentanaOpcionesCALLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, VentanaOpcionesCALLLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addCallOptionToWallet)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -429,15 +472,11 @@ public class MainFrame extends JFrame {
         VentanaOpcionesCALLLayout.setVerticalGroup(
             VentanaOpcionesCALLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VentanaOpcionesCALLLayout.createSequentialGroup()
-                .addGroup(VentanaOpcionesCALLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(VentanaOpcionesCALLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
-                    .addGroup(VentanaOpcionesCALLLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(addCallOptionToWallet)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                .addGroup(VentanaOpcionesCALLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -515,7 +554,7 @@ public class MainFrame extends JFrame {
                     .addComponent(jLabel2)
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -555,7 +594,7 @@ public class MainFrame extends JFrame {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -622,15 +661,6 @@ public class MainFrame extends JFrame {
         });
         walletMenu.add(createWallet);
 
-        openWalletButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK));
-        openWalletButton.setText("Abrir cartera");
-        openWalletButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openWalletButtonActionPerformed(evt);
-            }
-        });
-        walletMenu.add(openWalletButton);
-
         BarraMenu.add(walletMenu);
 
         setJMenuBar(BarraMenu);
@@ -686,30 +716,21 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
-        addOptionToWallet(evt);
-    }//GEN-LAST:event_acceptButtonActionPerformed
-
-    private void addOptionToWallet(ActionEvent evt) {
+        // TODO add your handling code here:
         for (Wallet wallet : walletList) {
             if(wallet.getName().equals(walletSelector.getSelectedItem().toString())){
-                String line = getSelectedRow(TablaOpcionesPUT.getSelectedRow());
-                line.split("\\^");
-                if (line.contains("")) {
-                    Opcion op = new Opcion();
-                    op.toOption(line.split("\\^"));
-                    ArrayList opList = new ArrayList();
-                    opList.add(op);
-                    wallet.addOptionList(opList);
-                }
-                wallet.writeToFile(line);
+                Opcion opcion = getSelectedRow(TablaOpcionesPUT.getSelectedRow());
+                //wallet.addOptionList(optionsToWallet);
+                wallet.addOption(opcion);
+                //wallet.writeToFile(opcion.toWallet()); //REVISAR
             }
         }
-    }
+        addToWalletDialog.setVisible(false);
+    }//GEN-LAST:event_acceptButtonActionPerformed
 
     private void addPUTOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPUTOptionToWalletActionPerformed
         // TODO add your handling code here:
         this.addToWalletDialog.setVisible(true);
-        opType = "PUT";
     }//GEN-LAST:event_addPUTOptionToWalletActionPerformed
 
     private void connectionStatusButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_connectionStatusButtonMouseClicked
@@ -737,36 +758,6 @@ public class MainFrame extends JFrame {
         }
         createWalletDialog.setVisible(false);
     }//GEN-LAST:event_acceptWalletNameButtonActionPerformed
-
-    private void openWalletButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWalletButtonActionPerformed
-        if (evt.getSource() == openWalletButton) {
-            int returnVal = fileChooser.showOpenDialog(this);
-            if (returnVal == fileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                if (file.getPath().contains(".dbr")) {
-                    Wallet wallet = createWallet(file.getName().substring(0, file.getName().length()-4));
-                    List<String> lines = wallet.readFromFile();
-                    for (String line : lines) {
-                        Opcion opcion = new Opcion();
-                        if (line.contains("\\^")) {
-                            String[] optionFields = line.split("\\^");
-                            opcion.toOption(optionFields);
-                            List<Opcion> list = new ArrayList<Opcion>();
-                            list.add(opcion);
-                            wallet.addOptionList(list);
-                        }
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }//GEN-LAST:event_openWalletButtonActionPerformed
-
-    private void addCallOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCallOptionToWalletActionPerformed
-        this.addToWalletDialog.setVisible(true);
-        opType = "CALL";
-    }//GEN-LAST:event_addCallOptionToWalletActionPerformed
 
     /**
      * @param args the command line arguments
@@ -820,7 +811,6 @@ public class MainFrame extends JFrame {
     private javax.swing.JInternalFrame VentanaOpcionesPUT;
     private javax.swing.JButton acceptButton;
     private javax.swing.JButton acceptWalletNameButton;
-    private javax.swing.JButton addCallOptionToWallet;
     private javax.swing.JButton addPUTOptionToWallet;
     private javax.swing.JDialog addToWalletDialog;
     private javax.swing.JComboBox callComboBox;
@@ -831,7 +821,6 @@ public class MainFrame extends JFrame {
     private javax.swing.JDialog createWalletDialog;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exit;
-    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel jLabel1;
@@ -840,7 +829,6 @@ public class MainFrame extends JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JMenuItem openWalletButton;
     private javax.swing.JComboBox putComboBox;
     private javax.swing.JPanel topPanel;
     private javax.swing.JLabel walletLabel;
@@ -1058,7 +1046,7 @@ public class MainFrame extends JFrame {
         }  
     }    
 
-    private Wallet createWallet(String name) {
+    private void createWallet(String name) {
         //WalletFrame wallet = new WalletFrame();
         Wallet wallet = new Wallet(name);
         //System.out.println(wallet);
@@ -1070,7 +1058,7 @@ public class MainFrame extends JFrame {
             wallet.getFrame().setSelected(true);
         } catch (Exception e) {
         }
-        return wallet;
+        
     }
 
     private int calculateOptions(String tipo) {
@@ -1081,14 +1069,15 @@ public class MainFrame extends JFrame {
         return value;
     }
     
-    private String getSelectedRow(int selectedRow) {
+    private Opcion getSelectedRow(int selectedRow) {
         Opcion opcion = new Opcion();
         opcion.Ejercicio = TablaOpcionesPUT.getValueAt(selectedRow, 0).toString();
         opcion.Tipo = "PUT";
         opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
         opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
-        optionsToWallet.add(opcion.toString());
-        return opcion.toString();
+        //optionsToWallet.add(opcion.toString()); //REVISAR
+        optionsToWallet.add(opcion);
+        return opcion;
         //addToSelectedWallet(opcion);
         //System.out.println(optionsToWallet.get(0).Ejercicio);
     }
@@ -1099,59 +1088,6 @@ public class MainFrame extends JFrame {
         }
     }
 */
-    
-    private void testWallets() {
-        Wallet wallet  = new Wallet("asd");
-        ArrayList list = new ArrayList<String>();
-        list.add("sd1");
-        list.add("sd2");
-        list.add("sd3");
-        list.add("sd4");
-        wallet.writeToFile(list);
-        
-        ArrayList list2 = new ArrayList<String>();
-        list2.add("sdb1");
-        list2.add("sdb2");
-        wallet.writeToFile(list2);
-        
-        System.out.println("SIIIU");
-        printWallet(wallet);
-        int nWallets = findWallets().length;
-        System.out.println(nWallets);
-        
-    }
-    
-    private void printWallet(Wallet wallet){
-        List walletItems = wallet.readFromFile();
-        int walletSize = walletItems.size();
-        for (int i = 0; i < walletSize; i++) {
-            System.out.println(walletItems.get(i));
-        }
-    }
-        
-    private File[] findWallets(){
-        File f = new File(".");
-        File[] matchingFiles = f.listFiles(new FilenameFilter() {
-        public boolean accept(File dir, String name) {
-            return name.endsWith(".dbr");
-            }
-        });
-        return matchingFiles;
-    }
-
-    
-    private void updateConnectionStatus(boolean status){
-        if (status) {
-            connectionStatusButton.setBackground(Color.green);
-            connectionStatusButton.setEnabled(false);
-            connectionStatusButton.setText("Ok");
-        }else{
-            connectionStatusButton.setText("Reconectar");
-            connectionStatusButton.setBackground(Color.red);
-            connectionStatusButton.setEnabled(true);
-        }
-    }
-    
     private void fillCombobox() {
         File[] wallets = findWallets();
         int nWallets = findWallets().length;
@@ -1161,15 +1097,11 @@ public class MainFrame extends JFrame {
             String completeName = wallets[i].getName();
             String name = completeName.substring(0, completeName.length()-4);
             walletSelector.addItem(name);
-            //walletList.add(new Wallet(name));
+            //existinWallets[i] = wallets[i].getName();
         }
-    }
-
-    private void readWallets() {
-        File[] wallets = findWallets();
-        for (int i = 0; i < wallets.length; i++) {
-            //Files.readAllLines(wallets[i].getAbsoluteFile());
-        }
+        //walletSelector = new JComboBox(existinWallets);
+        //walletSelector.setSelectedIndex(0);
+        //walletSelector.repaint();
     }
 
 }

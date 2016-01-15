@@ -63,24 +63,27 @@ public class WalletFrame extends JInternalFrame {
         tm.addColumn("P. Compra de mercado");
     }
     
-    public void addOptionsToTable(List<Opcion> optionList){
-        for (Opcion optionList1 : optionList) {
-            System.out.println(optionList1.toString());
-        }
-        
-        
-        System.out.println("Estoy aqui EN WALLETFRAME");
+    public void addOptionsToTable(int optionsNumber, Opcion opcion){
+        //System.out.println("Estoy aqui");
         DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
-        tablemodel.setRowCount(optionList.size());
-        if(optionList.isEmpty()) return;
+        tablemodel.setRowCount(optionsNumber);
+        if(opcion == null) return;
+        jTable.setValueAt(1, optionsNumber - 1, 0); //comprobar en la lista si coinciden 2 opciones
+        jTable.setValueAt(opcion.Tipo, optionsNumber - 1, 1);
+        jTable.setValueAt(opcion.Vencimiento, optionsNumber - 1, 2);
+        jTable.setValueAt(opcion.Ejercicio, optionsNumber - 1, 3);
+        jTable.setValueAt(getDate(), optionsNumber - 1, 4);
+        jTable.setValueAt(opcion.Compra_Precio, optionsNumber - 1, 5);
+        /*        
         for (Opcion opcion : optionList) {
-            jTable.setValueAt("1", 0, 0); //comprobar en la lista si coinciden 2 opciones
+            jTable.setValueAt(1, 0, 0); //comprobar en la lista si coinciden 2 opciones
             jTable.setValueAt(opcion.Tipo, 0, 1);
             jTable.setValueAt(opcion.Vencimiento, 0, 2);
             jTable.setValueAt(opcion.Ejercicio, 0, 3);
             jTable.setValueAt(getDate(), 0, 4);
             jTable.setValueAt(opcion.Compra_Precio, 0, 5);
         }
+        */
     }
 
     private String getDate() {
