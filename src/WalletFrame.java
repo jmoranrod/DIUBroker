@@ -1,9 +1,15 @@
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,8 +36,6 @@ public class WalletFrame extends JInternalFrame {
         panel.setLayout(new BorderLayout());
         this.setContentPane(panel);
         panel.add(jScrollPane, BorderLayout.CENTER);
-        
-        
     }
 
     public WalletFrame(String title) {
@@ -43,12 +47,17 @@ public class WalletFrame extends JInternalFrame {
         setPreferredSize(new Dimension(550, 250));
         ++walletNumber;
         pack();
+        //createComponents();
         setLocation(880, 90*walletNumber);
         panel.setLayout(new BorderLayout());
         this.setContentPane(panel);
         panel.add(jScrollPane, BorderLayout.CENTER);
     }
 
+    public JTable getjTable() {
+        return jTable;
+    }
+    
     private DefaultTableModel dataModel() {
         DefaultTableModel tm = new DefaultTableModel();
         createColumns(tm);
@@ -98,6 +107,29 @@ public class WalletFrame extends JInternalFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String formatedDate = sdf.format(date);
         return formatedDate;
+    }
+
+    private JButton removeOptionButton() {
+        JButton button = new JButton("Eliminar opción");
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Eliminando de cartera...");
+            }
+        });
+        
+        return button;
+    }
+
+    private void createComponents() {
+        add(createToolBar(), BorderLayout.NORTH);
+    }
+
+    private JPanel createToolBar() {
+        JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        toolBar.add(removeOptionButton());
+        return toolBar;
     }
     
     

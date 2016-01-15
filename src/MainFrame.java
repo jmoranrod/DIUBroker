@@ -188,12 +188,12 @@ public class MainFrame extends JFrame {
         fileMenu = new javax.swing.JMenu();
         exit = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
+        removeOptionMenuItem = new javax.swing.JMenuItem();
         walletMenu = new javax.swing.JMenu();
         createWallet = new javax.swing.JMenuItem();
         openWalletMenuButton = new javax.swing.JMenuItem();
 
         addToWalletDialog.setTitle("Añadir a Opción a Cartera");
-        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 118));
         addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 118));
         addToWalletDialog.setResizable(false);
 
@@ -425,7 +425,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -495,7 +495,7 @@ public class MainFrame extends JFrame {
                     .addComponent(callComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                .addComponent(jScrollPane3)
                 .addContainerGap())
         );
 
@@ -573,7 +573,7 @@ public class MainFrame extends JFrame {
                     .addComponent(jLabel2)
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -613,7 +613,7 @@ public class MainFrame extends JFrame {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -667,6 +667,16 @@ public class MainFrame extends JFrame {
         BarraMenu.add(fileMenu);
 
         editMenu.setText("Edit");
+
+        removeOptionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
+        removeOptionMenuItem.setText("Eliminar opción de cartera");
+        removeOptionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeOptionMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(removeOptionMenuItem);
+
         BarraMenu.add(editMenu);
 
         walletMenu.setText("Wallet");
@@ -825,6 +835,15 @@ public class MainFrame extends JFrame {
         }
     }//GEN-LAST:event_openWalletMenuButtonActionPerformed
 
+    private void removeOptionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeOptionMenuItemActionPerformed
+        if(Escritorio.getSelectedFrame() instanceof WalletFrame){
+            WalletFrame frame = (WalletFrame) Escritorio.getSelectedFrame();
+            DefaultTableModel model = (DefaultTableModel) frame.getjTable().getModel();
+            model.removeRow(frame.getjTable().getSelectedRow());
+            
+        }
+    }//GEN-LAST:event_removeOptionMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -900,6 +919,7 @@ public class MainFrame extends JFrame {
     private javax.swing.JTextField numberOfOptions;
     private javax.swing.JMenuItem openWalletMenuButton;
     private javax.swing.JComboBox putComboBox;
+    private javax.swing.JMenuItem removeOptionMenuItem;
     private javax.swing.JPanel topPanel;
     private javax.swing.JLabel walletLabel;
     private javax.swing.JMenu walletMenu;
