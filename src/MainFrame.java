@@ -7,7 +7,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.nio.file.FileSystems;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -778,7 +783,7 @@ public class MainFrame extends JFrame {
                 }
                 opcion.setCantidad(numberOfOptions.getText());
                 //wallet.addOption(opcion);
-                WalletOption option = new WalletOption(numberOfOptions.getText(), opcion.Tipo, opcion.Vencimiento, opcion.Ejercicio, opcion.getDate(), opcion.Compra_Precio);
+                WalletOption option = new WalletOption(numberOfOptions.getText(), opcion.Tipo, formatDate(opcion.Vencimiento), opcion.Ejercicio, opcion.getDate(), opcion.Compra_Precio);
                 wallet.updateFrame(option);
                 wallet.getWalletIO().writeToFile(option.toString());
             }
@@ -803,7 +808,6 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_connectionStatusButtonMouseClicked
 
     private void cancelWalletNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelWalletNameButtonActionPerformed
-        // TODO add your handling code here:
         createWalletDialog.setVisible(false);
     }//GEN-LAST:event_cancelWalletNameButtonActionPerformed
 
@@ -857,10 +861,39 @@ public class MainFrame extends JFrame {
             for (String line : lines) {
                 if(line.contains(" ")){
                     String[] optionFields = line.split("\\s");
-                    String vencimiento = optionFields[2]+" "+ optionFields[3] +" "+optionFields[4];
-                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[5], optionFields[6], optionFields[7]);
-                    wallet.updateFrame(walletOption);
+                    String vencimiento = optionFields[2];
+                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5]);
+
+                    String[] date = walletOption.getVencimiento().split("/");
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    LocalDate today = dateTime.toLocalDate();
+                    LocalDate fechaVencimiento = LocalDate.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
+
+                    if (fechaVencimiento.compareTo(today) >= 0) {
+                        wallet.updateFrame(walletOption);
+                        //wallet.getwOptions().add(walletOption);
+                        
+                    }
                 }
+            }
+            for (String line : lines) {
+                if(line.contains(" ")){
+                    String[] optionFields = line.split("\\s");
+                    String vencimiento = optionFields[2];
+                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5]);
+
+                    String[] date = walletOption.getVencimiento().split("/");
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    LocalDate today = dateTime.toLocalDate();
+                    LocalDate fechaVencimiento = LocalDate.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
+
+                    if (fechaVencimiento.compareTo(today) <= 0) {
+                        wallet.getWalletIO().removeLine(lines.indexOf(line));
+                        //wallet.getwOptions().remove(lines.indexOf(line)-1);
+                        lines = wallet.getWalletIO().readFromFile();
+                    }
+                }
+                System.out.println("S");
             }
         }else{
             JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
@@ -990,6 +1023,38 @@ public class MainFrame extends JFrame {
         Fecha.setText(formatedDate);
     }
 
+    private String formatDate(String vencimiento){   
+        String[] list = vencimiento.split("\\s");
+        String month = list[1];
+        switch (month){
+            case "ene" : list[1] = "01";
+                break;
+            case "feb" : list[1] = "02";
+                break;
+            case "mar" : list[1] = "03";
+                break;
+            case "abr" : list[1] = "04";
+                break;
+            case "may" : list[1] = "05";
+                break;
+            case "jun" : list[1] = "06";
+                break;
+            case "jul" : list[1] = "07";
+                break;
+            case "ago" : list[1] = "08";
+                break;
+            case "sep" : list[1] = "09";
+                break;
+            case "oct" : list[1] = "10";
+                break;
+            case "nov" : list[1] = "11";
+                break;
+            case "dic" : list[1] = "12";
+                break;
+        }
+        return list[0]+ "/" + list[1] + "/" + list[2];
+    }
+    
     private Float toFloat(String texto){
         texto = texto.replace(".", "");
         texto = texto.replace(",", ".");
