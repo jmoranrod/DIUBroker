@@ -8,6 +8,11 @@ public class Wallet {
     
     private String walletName;
     private List<WalletOption> wOptions;
+    
+    private float value = 0;
+    private float earnings;
+    private float inverted;
+    
     private WalletFrame frame;
     private WalletIO walletIO;
     private File f;
@@ -56,9 +61,10 @@ public class Wallet {
         }
     }
 
-    public void updateFrame(WalletOption opcion) {
-        wOptions.add(opcion);
-        this.frame.addOptionsToTable(wOptions.size(), opcion);
+    public void updateFrame(WalletOption option) {
+        wOptions.add(option);
+        calculateEarnings(option);
+        this.frame.addOptionsToTable(wOptions.size(), option);
     }
 
     public WalletIO getWalletIO() {
@@ -67,14 +73,52 @@ public class Wallet {
     
     public void addOption(WalletOption option){
         this.wOptions.add(option);
-        //this.value += toFloat(option.Compra_Precio);
+        calculateEarnings(option);
         this.frame.addOptionsToTable(wOptions.size(), wOptions.get(wOptions.indexOf(wOptions.size()-1)));
         //writeToFile(option.toWallet(1));
     }
     
     private Float toFloat(String texto){
-        texto = texto.replace(".", "");
-        texto = texto.replace(",", ".");
-        return Float.valueOf(texto);
+        if (!texto.contains("-")) {
+            texto = texto.replace(".", "");
+            texto = texto.replace(",", ".");
+            return Float.valueOf(texto);
+        }
+        return 0f;
     }
+
+    public float getEarnings() {
+        return earnings;
+    }
+
+    public void setEarnings(float earnings) {
+        this.earnings = earnings;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    public float getInverted() {
+        return inverted;
+    }
+
+    public void setInverted(float inverted) {
+        this.inverted = inverted;
+    }
+
+    
+    
+    private void calculateEarnings(WalletOption option) {
+        this.earnings += toFloat(option.getPrecioCompra()) - toFloat(option.getPrecioVenta());
+        
+        System.out.println("Mult: " + toFloat(option.getPrecioCompra()) * toFloat(option.getCantidad()));
+        this.value += toFloat(option.getPrecioCompra()) * toFloat(option.getCantidad());
+        this.inverted += toFloat(option.getPrecioVenta()) * toFloat(option.getCantidad());
+    }
+    
 }

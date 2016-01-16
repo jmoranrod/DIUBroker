@@ -82,6 +82,7 @@ public class WalletFrame extends JInternalFrame {
         tm.addColumn("P. Ejercicio");
         tm.addColumn("F. Entrada a Cartera");
         tm.addColumn("P. Compra de mercado");
+        tm.addColumn("P. Venta de mercado");
     }
     
     public void addOptionsToTable(int rowCount, Opcion opcion){
@@ -94,6 +95,7 @@ public class WalletFrame extends JInternalFrame {
         jTable.setValueAt(opcion.Ejercicio, rowCount - 1, 3);
         jTable.setValueAt(getDate(), rowCount - 1, 4);
         jTable.setValueAt(opcion.Compra_Precio, rowCount - 1, 5);
+        jTable.setValueAt(opcion.Venta_Precio, rowCount-1, 6);
 
     }
     
@@ -107,6 +109,7 @@ public class WalletFrame extends JInternalFrame {
         jTable.setValueAt(opcion.getEjercicio(), tableIndex, 3);
         jTable.setValueAt(getDate(), tableIndex, 4);
         jTable.setValueAt(opcion.getPrecioCompra(), tableIndex, 5);
+        jTable.setValueAt(opcion.getPrecioVenta(), tableIndex, 6);
         tableIndex++;
     }
 

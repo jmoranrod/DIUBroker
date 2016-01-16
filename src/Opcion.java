@@ -33,7 +33,13 @@ public class Opcion {
         this.cantidad = cantidad;
     }
 
-    
+    public void setVenta_Precio(String Venta_Precio) {
+        this.Venta_Precio = Venta_Precio;
+    }
+
+    public void setCompra_Precio(String Compra_Precio) {
+        this.Compra_Precio = Compra_Precio;
+    }
     
     @Override
     public String toString() {

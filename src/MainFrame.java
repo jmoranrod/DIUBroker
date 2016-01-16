@@ -189,6 +189,10 @@ public class MainFrame extends JFrame {
         topPanel = new javax.swing.JPanel();
         Fecha = new javax.swing.JTextField();
         connectionStatusButton = new javax.swing.JButton();
+        connectionStateLabel = new javax.swing.JLabel();
+        importLabel = new javax.swing.JLabel();
+        walletValueLabel = new javax.swing.JLabel();
+        earningsLabel = new javax.swing.JLabel();
         BarraMenu = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exit = new javax.swing.JMenuItem();
@@ -431,7 +435,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -514,7 +518,7 @@ public class MainFrame extends JFrame {
                         .addContainerGap()
                         .addComponent(addCallOptionToWallet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -626,11 +630,11 @@ public class MainFrame extends JFrame {
                     .addComponent(VentanaFuturos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -647,26 +651,51 @@ public class MainFrame extends JFrame {
             }
         });
 
+        connectionStateLabel.setText("Estado de conexión: ");
+
+        importLabel.setText("Importe invertido: ");
+
+        walletValueLabel.setText("Valor actual de la cartera: ");
+
+        earningsLabel.setText("Ganancia de la cartera: ");
+
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
         topPanel.setLayout(topPanelLayout);
         topPanelLayout.setHorizontalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(connectionStatusButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(importLabel)
+                .addGap(110, 110, 110)
+                .addComponent(walletValueLabel)
+                .addGap(114, 114, 114)
+                .addComponent(earningsLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(connectionStateLabel)
+                .addGap(39, 39, 39)
+                .addComponent(connectionStatusButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(topPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(connectionStatusButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
+                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(topPanelLayout.createSequentialGroup()
-                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(connectionStateLabel)
+                            .addComponent(importLabel)
+                            .addComponent(walletValueLabel)
+                            .addComponent(earningsLabel)))
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(connectionStatusButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(topPanelLayout.createSequentialGroup()
+                                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
 
@@ -775,16 +804,18 @@ public class MainFrame extends JFrame {
             if(wallet.getName().equals(walletSelector.getSelectedItem().toString())){
                 Opcion opcion;
                 if (isCall) {
-                    opcion = getSelectedRow(TablaOpcionesCALL.getSelectedRow());
+                    opcion = getSelectedRow(TablaOpcionesCALL.getSelectedRow(), TablaOpcionesCALL);
                     opcion.Tipo = "CALL";
                 }else{
-                    opcion = getSelectedRow(TablaOpcionesPUT.getSelectedRow());
+                    opcion = getSelectedRow(TablaOpcionesPUT.getSelectedRow(), TablaOpcionesPUT);
                     opcion.Tipo = "PUT";
                 }
                 opcion.setCantidad(numberOfOptions.getText());
-                //wallet.addOption(opcion);
-                WalletOption option = new WalletOption(numberOfOptions.getText(), opcion.Tipo, formatDate(opcion.Vencimiento), opcion.Ejercicio, opcion.getDate(), opcion.Compra_Precio);
+                WalletOption option = new WalletOption(numberOfOptions.getText(), opcion.Tipo, formatDate(opcion.Vencimiento), opcion.Ejercicio, opcion.getDate(), opcion.Compra_Precio, opcion.Venta_Precio);
                 wallet.updateFrame(option);
+                earningsLabel.setText("Ganancias de la cartera: " + wallet.getEarnings());
+                walletValueLabel.setText("Valor actual de la cartera: " + wallet.getValue());
+                importLabel.setText("Importe invertido: " + wallet.getInverted());
                 wallet.getWalletIO().writeToFile(option.toString());
             }
         }
@@ -862,7 +893,8 @@ public class MainFrame extends JFrame {
                 if(line.contains(" ")){
                     String[] optionFields = line.split("\\s");
                     String vencimiento = optionFields[2];
-                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5]);
+                    System.out.println("PVENTA: " + optionFields[6]);
+                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5], optionFields[6]);
 
                     String[] date = walletOption.getVencimiento().split("/");
                     LocalDateTime dateTime = LocalDateTime.now();
@@ -871,8 +903,6 @@ public class MainFrame extends JFrame {
 
                     if (fechaVencimiento.compareTo(today) >= 0) {
                         wallet.updateFrame(walletOption);
-                        //wallet.getwOptions().add(walletOption);
-                        
                     }
                 }
             }
@@ -880,7 +910,7 @@ public class MainFrame extends JFrame {
                 if(line.contains(" ")){
                     String[] optionFields = line.split("\\s");
                     String vencimiento = optionFields[2];
-                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5]);
+                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5], optionFields[6]);
 
                     String[] date = walletOption.getVencimiento().split("/");
                     LocalDateTime dateTime = LocalDateTime.now();
@@ -889,11 +919,9 @@ public class MainFrame extends JFrame {
 
                     if (fechaVencimiento.compareTo(today) <= 0) {
                         wallet.getWalletIO().removeLine(lines.indexOf(line));
-                        //wallet.getwOptions().remove(lines.indexOf(line)-1);
                         lines = wallet.getWalletIO().readFromFile();
                     }
                 }
-                System.out.println("S");
             }
         }else{
             JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
@@ -981,14 +1009,17 @@ public class MainFrame extends JFrame {
     private javax.swing.JComboBox callComboBox;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton cancelWalletNameButton;
+    private javax.swing.JLabel connectionStateLabel;
     private javax.swing.JButton connectionStatusButton;
     private javax.swing.JMenuItem createWallet;
     private javax.swing.JDialog createWalletDialog;
     private javax.swing.JMenuItem deleteButton;
+    private javax.swing.JLabel earningsLabel;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exit;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JLabel importLabel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1006,6 +1037,7 @@ public class MainFrame extends JFrame {
     private javax.swing.JLabel walletNameLabel;
     private javax.swing.JTextField walletNameTextField;
     private javax.swing.JComboBox walletSelector;
+    private javax.swing.JLabel walletValueLabel;
     // End of variables declaration//GEN-END:variables
 
     private MEFF_Contado contado = new MEFF_Contado();
@@ -1232,12 +1264,13 @@ public class MainFrame extends JFrame {
         return value;
     }
     
-    private Opcion getSelectedRow(int selectedRow) {
+    private Opcion getSelectedRow(int selectedRow, JTable table) {
         Opcion opcion = new Opcion();
-        opcion.Ejercicio = TablaOpcionesPUT.getValueAt(selectedRow, 0).toString();
-        opcion.Tipo = "PUT";
-        opcion.Vencimiento = TablaOpcionesPUT.getValueAt(selectedRow, 8).toString();
-        opcion.Compra_Precio = TablaOpcionesPUT.getValueAt(selectedRow, 2).toString();
+        opcion.Ejercicio = table.getValueAt(selectedRow, 0).toString();
+        opcion.Vencimiento = table.getValueAt(selectedRow, 8).toString();
+        opcion.Compra_Precio = table.getValueAt(selectedRow, 2).toString();
+        opcion.Venta_Precio = table.getValueAt(selectedRow, 3).toString();
+        //System.out.println("PRECIOV " + opcion.Venta_Precio);
         //optionsToWallet.add(opcion.toString()); //REVISAR
         optionsToWallet.add(opcion);
         return opcion;

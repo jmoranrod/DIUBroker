@@ -6,14 +6,16 @@ public class WalletOption {
     private String ejercicio;
     private String fechaEntrada;
     private String precioCompra;
+    private String precioVenta;
 
-    public WalletOption(String cantidad, String tipo, String vencimiento, String ejercicio, String fechaEntrada, String precioCompra) {
+    public WalletOption(String cantidad, String tipo, String vencimiento, String ejercicio, String fechaEntrada, String precioCompra, String precioVenta) {
         this.cantidad = cantidad;
         this.tipo = tipo;
         this.vencimiento = vencimiento;
         this.ejercicio = ejercicio;
         this.fechaEntrada = fechaEntrada;
         this.precioCompra = precioCompra;
+        this.precioVenta = precioVenta;
     }
 
     public String getCantidad() {
@@ -63,12 +65,18 @@ public class WalletOption {
     public void setPrecioCompra(String precioCompra) {
         this.precioCompra = precioCompra;
     }
-    
-    
+
+    public String getPrecioVenta() {
+        return precioVenta;
+    }
+
+    public void setPrecioVenta(String precioVenta) {
+        this.precioVenta = precioVenta;
+    }
     
     @Override
     public String toString() {
-        return cantidad + " " + tipo + " " + vencimiento + " " + ejercicio.trim() + " " + fechaEntrada + " " + precioCompra;
+        return cantidad + " " + tipo + " " + vencimiento + " " + ejercicio.trim() + " " + fechaEntrada + " " + precioCompra + " " + precioVenta;
     }
     
     
