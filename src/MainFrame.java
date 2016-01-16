@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -32,6 +33,7 @@ public class MainFrame extends JFrame {
         
         
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         /*createWallet.setActionCommand("createWallet");
         createWallet.addActionListener(this);*/
         Fecha.setEditable(false);
@@ -192,8 +194,8 @@ public class MainFrame extends JFrame {
         openWalletMenuButton = new javax.swing.JMenuItem();
 
         addToWalletDialog.setTitle("Añadir a Opción a Cartera");
-        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 118));
-        addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 118));
+        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 162));
+        addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 162));
         addToWalletDialog.setResizable(false);
 
         walletLabel.setText("Seleccionar cartera:");
@@ -248,7 +250,7 @@ public class MainFrame extends JFrame {
                 .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(walletLabel)
                     .addComponent(walletSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(addToWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(acceptButton)
                     .addComponent(cancelButton))
@@ -424,7 +426,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -507,7 +509,7 @@ public class MainFrame extends JFrame {
                         .addContainerGap()
                         .addComponent(addCallOptionToWallet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -619,11 +621,11 @@ public class MainFrame extends JFrame {
                     .addComponent(VentanaFuturos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -831,23 +833,39 @@ public class MainFrame extends JFrame {
             int returnValue = fileChooser.showOpenDialog(this);
             if(returnValue == fileChooser.APPROVE_OPTION){
                 File file = fileChooser.getSelectedFile();
-                if(file.getPath().contains(".dbr")){
-                    Wallet wallet = createWallet(file.getName().substring(0, file.getName().length() - 4));
-                    List<String> lines = wallet.getWalletIO().readFromFile();
-                    for (String line : lines) {
-                        if(line.contains(" ")){
-                            String[] optionFields = line.split("\\s");
-                            String vencimiento = optionFields[2]+" "+ optionFields[3] +" "+optionFields[4];
-                            walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[5], optionFields[6], optionFields[7]);
-                            wallet.updateFrame(walletOption);
+                if (walletList.isEmpty()) {
+                    openWallet(file);
+                    
+                }else{
+                    for (int i = 0; i < walletList.size(); i++) {
+                        if (file.getName().substring(0, file.getName().length() - 4).equals(walletList.get(i).getName())) {
+                            break;
+                        }
+                        if (i == walletList.size()-1) {
+                            openWallet(file);
                         }
                     }
-                }else{
-                    JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
     }//GEN-LAST:event_openWalletMenuButtonActionPerformed
+
+    private void openWallet(File file) throws HeadlessException {
+        if(file.getPath().contains(".dbr")){
+            Wallet wallet = createWallet(file.getName().substring(0, file.getName().length() - 4));
+            List<String> lines = wallet.getWalletIO().readFromFile();
+            for (String line : lines) {
+                if(line.contains(" ")){
+                    String[] optionFields = line.split("\\s");
+                    String vencimiento = optionFields[2]+" "+ optionFields[3] +" "+optionFields[4];
+                    walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[5], optionFields[6], optionFields[7]);
+                    wallet.updateFrame(walletOption);
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void addCallOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCallOptionToWalletActionPerformed
         this.addToWalletDialog.setVisible(true);
@@ -864,10 +882,11 @@ public class MainFrame extends JFrame {
             String walletName = frame.getName();
             for (int i = 0; i < walletList.size(); i++) {
                 if (walletList.get(i).getName().equals(walletName)) {
+                    walletList.get(i).getwOptions().remove(rowNumber);
                     walletList.get(i).getWalletIO().removeLine(rowNumber);
                 }
             }
-            
+            frame.setTableIndex(frame.getTableIndex()-1);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 

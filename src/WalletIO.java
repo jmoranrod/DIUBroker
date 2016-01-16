@@ -97,13 +97,6 @@ public class WalletIO {
         }
         System.out.println(index);
         lines.remove(index+1);
-        /*System.out.println("ELIMINAR:" + lineToDelete);
-        for (Object line : lines) {
-            if (line.equals(lineToDelete)) {
-                System.out.println("ESTA ES : " + line);
-                lines.remove(line);
-            }
-        }*/
         writeToFile(lines);
         return true;
     }

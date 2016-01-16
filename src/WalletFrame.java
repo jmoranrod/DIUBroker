@@ -48,6 +48,14 @@ public class WalletFrame extends JInternalFrame {
         panel.add(jScrollPane, BorderLayout.CENTER);
     }
 
+    public void setTableIndex(int tableIndex) {
+        this.tableIndex = tableIndex;
+    }
+
+    public int getTableIndex() {
+        return tableIndex;
+    }
+    
     public JTable getjTable() {
         return jTable;
     }
@@ -77,7 +85,6 @@ public class WalletFrame extends JInternalFrame {
     }
     
     public void addOptionsToTable(int rowCount, Opcion opcion){
-        //System.out.println("Estoy aqui");
         DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
         tablemodel.setRowCount(rowCount);
         if(opcion == null) return;
@@ -91,8 +98,6 @@ public class WalletFrame extends JInternalFrame {
     }
     
     public void addOptionsToTable(int rowCount, WalletOption opcion){
-        System.out.println("rowCount: "+rowCount);
-        System.out.println(opcion.toString());
         DefaultTableModel tablemodel = (DefaultTableModel) jTable.getModel();
         tablemodel.setRowCount(rowCount);
         if(opcion == null) return;
@@ -102,7 +107,6 @@ public class WalletFrame extends JInternalFrame {
         jTable.setValueAt(opcion.getEjercicio(), tableIndex, 3);
         jTable.setValueAt(getDate(), tableIndex, 4);
         jTable.setValueAt(opcion.getPrecioCompra(), tableIndex, 5);
-        System.out.println(jTable.getModel().getValueAt(0, 0));
         tableIndex++;
     }
 
