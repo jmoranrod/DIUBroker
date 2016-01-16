@@ -5,14 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.nio.file.FileSystems;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,9 +56,7 @@ public class MainFrame extends JFrame {
         
         connectionStatusButton.setContentAreaFilled(false);
         connectionStatusButton.setOpaque(true);
-        //testWallets();
         fillCombobox();
-        
         
         setDate();
         Timer timDate = new Timer(1000,new ActionListener(){ // 1 segundo
@@ -78,9 +72,28 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent evt){
                 CollectData();
+                updateWallets();
             }
         });
         timData.start();
+        
+        Timer refreshTimer = new Timer(1000,new ActionListener(){ // 1 segundo
+            @Override
+            public void actionPerformed(ActionEvent evt){
+                if (Escritorio.getSelectedFrame() instanceof WalletFrame) {
+                    String selected = Escritorio.getSelectedFrame().getName();
+                    for (Wallet wallet : walletList) {
+                        if (wallet.getName().equals(selected)) {
+                            updateLabels(wallet);
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+        });
+        refreshTimer.start();
+        
     }
     
     
@@ -813,14 +826,52 @@ public class MainFrame extends JFrame {
                 opcion.setCantidad(numberOfOptions.getText());
                 WalletOption option = new WalletOption(numberOfOptions.getText(), opcion.Tipo, formatDate(opcion.Vencimiento), opcion.Ejercicio, opcion.getDate(), opcion.Compra_Precio, opcion.Venta_Precio);
                 wallet.updateFrame(option);
-                earningsLabel.setText("Ganancias de la cartera: " + wallet.getEarnings());
-                walletValueLabel.setText("Valor actual de la cartera: " + wallet.getValue());
-                importLabel.setText("Importe invertido: " + wallet.getInverted());
+                updateLabels(wallet);
                 wallet.getWalletIO().writeToFile(option.toString());
             }
         }
         addToWalletDialog.setVisible(false);
     }//GEN-LAST:event_acceptButtonActionPerformed
+
+    /*private void updateLabels() {
+        Wallet wallet = null;
+        JInternalFrame[] frameList = Escritorio.getAllFrames();
+        for (JInternalFrame frame : frameList) {
+            if (frame instanceof WalletFrame) {
+                System.out.println("FRAME " + frame.getName());
+                if (frame.isSelected()) {
+                    String walletName = Escritorio.getSelectedFrame().getName();
+                    System.out.println("name "+ walletName);
+                    for (Wallet wallet1 : walletList) {
+                        System.out.println("compare: "+ wallet1.getName());
+                        if (wallet1.getName().equals(walletName)) {
+                            wallet = wallet1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        earningsLabel.setText("Ganancias de la cartera: " + wallet.getEarnings());
+        if (wallet.getEarnings() < 0f) {
+            earningsLabel.setForeground(Color.red);
+        }else{
+            earningsLabel.setForeground(Color.green);
+        }
+        walletValueLabel.setText("Valor actual de la cartera: " + wallet.getValue());
+        importLabel.setText("Importe invertido: " + wallet.getInverted());
+    }*/
+    
+    private void updateLabels(Wallet wallet) {
+        earningsLabel.setText("Ganancias de la cartera: " + wallet.getEarnings());
+        if (wallet.getEarnings() < 0f) {
+            earningsLabel.setForeground(Color.red);
+        }else{
+            earningsLabel.setForeground(Color.green);
+        }
+        walletValueLabel.setText("Valor actual de la cartera: " + wallet.getValue());
+        importLabel.setText("Importe invertido: " + wallet.getInverted());
+    }
 
     private void addPUTOptionToWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPUTOptionToWalletActionPerformed
         this.addToWalletDialog.setVisible(true);
@@ -923,6 +974,8 @@ public class MainFrame extends JFrame {
                     }
                 }
             }
+            updateLabels(wallet);
+            updateWallets();
         }else{
             JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -1290,4 +1343,65 @@ public class MainFrame extends JFrame {
         }
     }
 
+    private void updateWallets(){
+        String tipo ="";
+        String ejercicio="";
+        String fecha="";
+        LocalDate today;
+        for (Wallet wallet : walletList) {
+            for (WalletOption option : wallet.getwOptions()) {
+                tipo = option.getTipo();
+                ejercicio = option.getEjercicio();
+                fecha = option.getVencimiento();
+                String precioNuevo = searchOption(ejercicio, tipo, fecha);
+                updateOption(wallet, precioNuevo, ejercicio, fecha);
+            }
+        }
+    }
+
+    private String searchOption(String ejercicio, String tipo, String fecha) {
+        if (tipo.equals("CALL")) {
+            for (int i = 0; i < TablaOpcionesCALL.getModel().getRowCount(); i++) {
+                String ejercicioTabla = TablaOpcionesCALL.getModel().getValueAt(i, 0).toString();
+                String fechaTabla = TablaOpcionesCALL.getModel().getValueAt(i, 8).toString();
+                fechaTabla = formatDate(fechaTabla);
+                if (ejercicioTabla.trim().equals(ejercicio) && fecha.compareTo(fechaTabla) == 0) {
+                    return TablaOpcionesCALL.getModel().getValueAt(i, 2).toString();
+                }
+            }
+        }else{
+            for (int i = 0; i < TablaOpcionesPUT.getModel().getRowCount(); i++) {
+                String ejercicioTabla = TablaOpcionesPUT.getModel().getValueAt(i, 0).toString();
+                String fechaTabla = TablaOpcionesPUT.getModel().getValueAt(i, 8).toString();
+                fechaTabla = formatDate(fechaTabla);
+                if (ejercicioTabla.trim().equals(ejercicio) && fecha.compareTo(fechaTabla) == 0) {
+                    return TablaOpcionesPUT.getModel().getValueAt(i, 2).toString();
+                }
+            }
+        }
+        return "-";
+    }
+
+    private void updateOption(Wallet wallet, String precioNuevo, String ejercicio, String fecha) {
+        String fila ="";
+        for (WalletOption option : wallet.getwOptions()) {
+            if (option.getEjercicio().equals(ejercicio) && option.getVencimiento().compareTo(fecha) == 0) {
+                if (!option.getPrecioCompra().equals(precioNuevo)) {
+                    option.setPrecioCompra(precioNuevo);
+                    for (int i = 0; i < wallet.getFrame().getjTable().getModel().getRowCount(); i++) {
+                        String ejerTabla = wallet.getFrame().getjTable().getModel().getValueAt(i, 3).toString();
+                        String fechaTabla = wallet.getFrame().getjTable().getModel().getValueAt(i, 2).toString();
+                        if (ejerTabla.equals(ejercicio) && fechaTabla.equals(fecha)) {
+                            wallet.getFrame().getjTable().setValueAt(precioNuevo, i, 5);
+                            for (int j = 0; j < wallet.getFrame().getjTable().getModel().getColumnCount(); j++) {
+                                fila = fila + " " + wallet.getFrame().getjTable().getValueAt(i, j).toString();
+                            }
+                            wallet.getWalletIO().writeToFile(fila);
+                            wallet.getWalletIO().removeLine(i+1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

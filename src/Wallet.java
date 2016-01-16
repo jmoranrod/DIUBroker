@@ -110,15 +110,10 @@ public class Wallet {
     public void setInverted(float inverted) {
         this.inverted = inverted;
     }
-
-    
     
     private void calculateEarnings(WalletOption option) {
         this.earnings += toFloat(option.getPrecioCompra()) - toFloat(option.getPrecioVenta());
-        
-        System.out.println("Mult: " + toFloat(option.getPrecioCompra()) * toFloat(option.getCantidad()));
         this.value += toFloat(option.getPrecioCompra()) * toFloat(option.getCantidad());
         this.inverted += toFloat(option.getPrecioVenta()) * toFloat(option.getCantidad());
     }
-    
 }
