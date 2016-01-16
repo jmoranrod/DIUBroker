@@ -96,7 +96,7 @@ public class WalletIO {
             return false;
         }
         System.out.println(index);
-        lines.remove(index);
+        lines.remove(index+1);
         /*System.out.println("ELIMINAR:" + lineToDelete);
         for (Object line : lines) {
             if (line.equals(lineToDelete)) {
