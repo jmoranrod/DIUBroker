@@ -1332,14 +1332,9 @@ public class MainFrame extends JFrame {
     }
 
     private void fillCombobox() {
-        File[] wallets = findWallets();
-        int nWallets = findWallets().length;
-        String[] existinWallets = new String[nWallets];
         walletSelector.removeAllItems();
-        for (int i = 0; i < nWallets; i++) {
-            String completeName = wallets[i].getName();
-            String name = completeName.substring(0, completeName.length()-4);
-            walletSelector.addItem(name);
+        for (Wallet wallet : walletList) {
+            walletSelector.addItem(wallet.getName());
         }
     }
 
@@ -1394,7 +1389,8 @@ public class MainFrame extends JFrame {
                         if (ejerTabla.equals(ejercicio) && fechaTabla.equals(fecha)) {
                             wallet.getFrame().getjTable().setValueAt(precioNuevo, i, 5);
                             for (int j = 0; j < wallet.getFrame().getjTable().getModel().getColumnCount(); j++) {
-                                fila = fila + " " + wallet.getFrame().getjTable().getValueAt(i, j).toString();
+                                fila = fila + wallet.getFrame().getjTable().getValueAt(i, j).toString();
+                                fila.trim();
                             }
                             wallet.getWalletIO().writeToFile(fila);
                             wallet.getWalletIO().removeLine(i+1);
