@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
         timDate.start();
 
         CollectData();
-        Timer timData = new Timer(180000, new ActionListener() { // 3 minutos
+        Timer timData = new Timer(300000, new ActionListener() { // 5 minutos
             @Override
             public void actionPerformed(ActionEvent evt) {
                 CollectData();
@@ -1244,7 +1244,6 @@ public class MainFrame extends JFrame {
 
     private boolean tablaOpciones() {
         boolean connectionStatus = opciones.getOptions();
-        updateConnectionStatus(connectionStatus);
         if (connectionStatus) {
             opciones.getOptions();
             int nOpcionesCALL = calculateOptions("CALL");
@@ -1303,7 +1302,6 @@ public class MainFrame extends JFrame {
 
     private boolean tablaFuturos() {
         boolean futures = futuros.getFutures();
-        updateConnectionStatus(futures);
         if (futures) {
             int nfuturos = futuros.Futuros.size();
             DefaultTableModel tablemodel = (DefaultTableModel) TablaFuturos.getModel();
@@ -1329,7 +1327,6 @@ public class MainFrame extends JFrame {
 
     private boolean tablaContado() {
         boolean spot = contado.getSpot();
-        updateConnectionStatus(spot);
         if (spot) {
             contado.getSpot();
             TableModel model = TablaContado.getModel();
