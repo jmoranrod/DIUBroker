@@ -44,7 +44,7 @@ public class WalletFrame extends JInternalFrame {
         setPreferredSize(new Dimension(550, 250));
         ++walletNumber;
         pack();
-        setLocation(880, 90*walletNumber);
+        //setLocation(880, 90+(walletNumber * 2));
         panel.setLayout(new BorderLayout());
         this.setContentPane(panel);
         panel.add(jScrollPane, BorderLayout.CENTER);

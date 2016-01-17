@@ -93,31 +93,22 @@ public class MEFF_Opciones {
                     }
                 }
                 try {
-                    //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);
                     Thread.sleep(3000);
                     trial--;
                 } catch (InterruptedException ex1) {
                     Logger.getLogger(MEFF_Opciones.class.getName()).log(Level.SEVERE, null, ex1);
                 }
-            } catch (IOException ex) {
-            //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);   
+            } catch (IOException ex) {  
                 return false;
-                /*try {
-                    //Logger.getLogger(MEFF_Futuros.class.getName()).log(Level.SEVERE, null, ex);
-                    Thread.sleep(3000);
-                    trial--;
-                } catch (InterruptedException ex1) {
-                    Logger.getLogger(MEFF_Opciones.class.getName()).log(Level.SEVERE, null, ex1);
-                }*/
             }
         }
         return false;
     }
    
     private void fillComboBoxes(String vencimiento) {
-        if(fechas.isEmpty()) fechas.add("None");
+        if(fechas.isEmpty()) fechas.add("Ninguna");
         if(fechas.contains(vencimiento)) return;
-        fechas.add(vencimiento); // fechas de vencimiento únicas.
+        fechas.add(vencimiento);
     }
 
     public List<String> getFechas() {
