@@ -1267,13 +1267,18 @@ public class MainFrame extends JFrame {
     }
 
     private void CollectData() {
-        tablaContado();
-        tablaFuturos();
-        tablaOpciones();
+        boolean tablaContado = tablaContado();
+        boolean tablaFuturos = tablaFuturos();
+        boolean tablaOpciones = tablaOpciones();
+        if(!tablaContado || !tablaFuturos || !tablaOpciones){
+            updateConnectionStatus(false);
+        }else{
+            updateConnectionStatus(true);
+        }
         fillComboBoxes();
     }
 
-    private void tablaOpciones() {
+    private boolean tablaOpciones() {
         boolean connectionStatus = opciones.getOptions();
         updateConnectionStatus(connectionStatus);
 
@@ -1291,6 +1296,7 @@ public class MainFrame extends JFrame {
             populatePUTTable(index, nopciones, tableIndex, nOpcionesPUT);
 
         }
+        return connectionStatus;
     }
 
     private void populateCALLTable(int index, int nopciones, int tableIndex, int nOpcionesCALL) {
@@ -1333,7 +1339,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void tablaFuturos() {
+    private boolean tablaFuturos() {
 
         boolean futures = futuros.getFutures();
         updateConnectionStatus(futures);
@@ -1360,10 +1366,10 @@ public class MainFrame extends JFrame {
             }
             //Notificaciones.setText("Datos disponibles");
         }
-
+        return futures;
     }
 
-    private void tablaContado() {
+    private boolean tablaContado() {
         boolean spot = contado.getSpot();
         updateConnectionStatus(spot);
         if (spot) {
@@ -1388,6 +1394,7 @@ public class MainFrame extends JFrame {
                 model.setValueAt("<html><font color='black'>" + diferencia + "</font></html>", 0, 1);
             }
         }
+        return spot;
     }
 
     private void fillComboBoxes() {
