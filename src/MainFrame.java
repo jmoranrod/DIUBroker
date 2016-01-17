@@ -224,7 +224,6 @@ public class MainFrame extends JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         addToWalletDialog.setTitle("Añadir a Opción a Cartera");
-        addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 162));
         addToWalletDialog.setMinimumSize(new java.awt.Dimension(315, 162));
         addToWalletDialog.setResizable(false);
 
@@ -354,6 +353,11 @@ public class MainFrame extends JFrame {
         });
 
         deleteCancelButton.setText("Cancelar");
+        deleteCancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteCancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout deleteWalletDialogLayout = new javax.swing.GroupLayout(deleteWalletDialog.getContentPane());
         deleteWalletDialog.getContentPane().setLayout(deleteWalletDialogLayout);
@@ -505,7 +509,7 @@ public class MainFrame extends JFrame {
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -588,7 +592,7 @@ public class MainFrame extends JFrame {
                         .addContainerGap()
                         .addComponent(addCallOptionToWallet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -596,6 +600,7 @@ public class MainFrame extends JFrame {
         VentanaOpcionesPUT.setIconifiable(true);
         VentanaOpcionesPUT.setTitle("Opciones IBEX35 - PUT");
         VentanaOpcionesPUT.setToolTipText("Opciones PUT del IBEX35");
+        VentanaOpcionesPUT.setMaximumSize(new java.awt.Dimension(450, 2147483647));
         VentanaOpcionesPUT.setVisible(true);
 
         putComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -666,7 +671,7 @@ public class MainFrame extends JFrame {
                     .addComponent(jLabel2)
                     .addComponent(putComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -682,10 +687,9 @@ public class MainFrame extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
                         .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(EscritorioLayout.createSequentialGroup()
-                        .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(EscritorioLayout.createSequentialGroup()
-                        .addComponent(VentanaOpcionesPUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(VentanaOpcionesPUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(VentanaOpcionesCALL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -699,11 +703,11 @@ public class MainFrame extends JFrame {
                     .addComponent(VentanaFuturos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(VentanaOpcionesCALL)
-                    .addComponent(VentanaOpcionesPUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(VentanaOpcionesPUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VentanaOpcionesCALL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(343, 343, 343))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -957,7 +961,7 @@ public class MainFrame extends JFrame {
 
     private void openWalletMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWalletMenuButtonActionPerformed
         fileChooser.setCurrentDirectory(new File("."));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Wallet File", "dbr"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivo de cartera", "dbr"));
         if(evt.getSource() == openWalletMenuButton){
             int returnValue = fileChooser.showOpenDialog(this);
             if(returnValue == fileChooser.APPROVE_OPTION){
@@ -1052,7 +1056,7 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void deleteAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAcceptButtonActionPerformed
-        int dialogConfirm = JOptionPane.showConfirmDialog(null, "Al eliminar la cartera se borrará el archivo del disco. ¿Está seguro de querer eliminar?");
+        int dialogConfirm = JOptionPane.showConfirmDialog(deleteWalletDialog, "Al eliminar la cartera se borrará el archivo del disco. ¿Está seguro de querer eliminar?", "Advertencia", JOptionPane.YES_NO_CANCEL_OPTION);
         if (dialogConfirm == JOptionPane.YES_OPTION) {
             String walletToDelete = deleteComboBox.getSelectedItem().toString();
             for (Wallet wallet : walletList) {
@@ -1064,7 +1068,7 @@ public class MainFrame extends JFrame {
                 }
             }
             this.deleteWalletDialog.setVisible(false);
-        } else if (dialogConfirm == JOptionPane.NO_OPTION){
+        } else if (dialogConfirm == JOptionPane.CANCEL_OPTION){
             this.deleteWalletDialog.setVisible(false);
         }
     }//GEN-LAST:event_deleteAcceptButtonActionPerformed
@@ -1078,6 +1082,10 @@ public class MainFrame extends JFrame {
             }
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void deleteCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCancelButtonActionPerformed
+        this.deleteWalletDialog.setVisible(false);
+    }//GEN-LAST:event_deleteCancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
