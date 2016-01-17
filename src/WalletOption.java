@@ -78,7 +78,4 @@ public class WalletOption {
     public String toString() {
         return cantidad + " " + tipo + " " + vencimiento + " " + ejercicio.trim() + " " + fechaEntrada + " " + precioCompra + " " + precioVenta;
     }
-    
-    
-    
 }

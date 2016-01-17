@@ -1,5 +1,4 @@
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -39,7 +38,6 @@ public class WalletIO {
                 ArrayList name = new ArrayList();
                 name.add(walletName);
                 Files.write(path, name, StandardOpenOption.CREATE_NEW);
-                //path = FileSystems.getDefault().getPath(walletName);
                 return path;
             }
             return null;
@@ -55,7 +53,6 @@ public class WalletIO {
     }
     
     public boolean writeToFile(String line){
-        //System.out.println(path.getFileName());
         try {
             ArrayList lines = new ArrayList();
             lines.add(line);

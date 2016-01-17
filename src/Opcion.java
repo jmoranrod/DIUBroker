@@ -2,7 +2,6 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class Opcion {
     public String Tipo;
     public String Hora;

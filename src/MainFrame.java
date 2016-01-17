@@ -38,15 +38,12 @@ public class MainFrame extends JFrame {
 
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        /*createWallet.setActionCommand("createWallet");
-         createWallet.addActionListener(this);*/
         Fecha.setEditable(false);
         addPUTOptionToWallet.setEnabled(false);
         this.setLocationRelativeTo(null);
         addToWalletDialog.setLocationRelativeTo(null);
         createWalletDialog.setLocationRelativeTo(null);
         hideColumns();
-        // Añade un listener para obtener el contenido de las filas. 
         TablaOpcionesPUT.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -61,7 +58,6 @@ public class MainFrame extends JFrame {
         connectionStatusButton.setContentAreaFilled(false);
         connectionStatusButton.setOpaque(true);
         fillCombobox();
-
         setDate();
         Timer timDate = new Timer(1000, new ActionListener() { // 1 segundo
             @Override
@@ -100,30 +96,6 @@ public class MainFrame extends JFrame {
 
     }
 
-    private void testWallets() {
-        Wallet wallet = new Wallet("asd");
-
-        wallet.getWalletIO().writeToFile("SD2");
-        wallet.getWalletIO().writeToFile("SD2");
-        wallet.getWalletIO().writeToFile("SD2");
-        wallet.getWalletIO().writeToFile("SD2");
-        wallet.getWalletIO().writeToFile("SD2");
-
-        System.out.println("SIIIU");
-        printWallet(wallet);
-        int nWallets = findWallets().length;
-        System.out.println(nWallets);
-
-    }
-
-    private void printWallet(Wallet wallet) {
-        List walletItems = wallet.getWalletIO().readFromFile();
-        int walletSize = walletItems.size();
-        for (int i = 0; i < walletSize; i++) {
-            System.out.println(walletItems.get(i));
-        }
-    }
-
     private File[] findWallets() {
         File f = new File(".");
         File[] matchingFiles = f.listFiles(new FilenameFilter() {
@@ -148,7 +120,6 @@ public class MainFrame extends JFrame {
     }
 
     private void hideColumns() {
-        /* OCULTA LAS COLUMNAS DEL VENCIMIENTO */
         TablaOpcionesPUT.getColumnModel().getColumn(8).setMinWidth(0);
         TablaOpcionesPUT.getColumnModel().getColumn(8).setMaxWidth(0);
         TablaOpcionesPUT.getColumnModel().getColumn(8).setWidth(0);
@@ -886,7 +857,6 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_createWalletActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
         this.addToWalletDialog.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -982,7 +952,6 @@ public class MainFrame extends JFrame {
                 File file = fileChooser.getSelectedFile();
                 if (walletList.isEmpty()) {
                     openWallet(file);
-
                 } else {
                     for (int i = 0; i < walletList.size(); i++) {
                         if (file.getName().substring(0, file.getName().length() - 4).equals(walletList.get(i).getName())) {
@@ -1006,12 +975,10 @@ public class MainFrame extends JFrame {
                     String[] optionFields = line.split("\\s");
                     String vencimiento = optionFields[2];
                     walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5], optionFields[6]);
-
                     String[] date = walletOption.getVencimiento().split("/");
                     LocalDateTime dateTime = LocalDateTime.now();
                     LocalDate today = dateTime.toLocalDate();
                     LocalDate fechaVencimiento = LocalDate.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
-
                     if (fechaVencimiento.compareTo(today) >= 0) {
                         wallet.updateFrame(walletOption);
                     }
@@ -1022,12 +989,10 @@ public class MainFrame extends JFrame {
                     String[] optionFields = line.split("\\s");
                     String vencimiento = optionFields[2];
                     walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5], optionFields[6]);
-
                     String[] date = walletOption.getVencimiento().split("/");
                     LocalDateTime dateTime = LocalDateTime.now();
                     LocalDate today = dateTime.toLocalDate();
                     LocalDate fechaVencimiento = LocalDate.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
-
                     if (fechaVencimiento.compareTo(today) <= 0) {
                         wallet.getWalletIO().removeLine(lines.indexOf(line));
                         lines = wallet.getWalletIO().readFromFile();
@@ -1050,7 +1015,6 @@ public class MainFrame extends JFrame {
         if (Escritorio.getSelectedFrame() instanceof WalletFrame) {
             WalletFrame frame = (WalletFrame) Escritorio.getSelectedFrame();
             DefaultTableModel model = (DefaultTableModel) frame.getjTable().getModel();
-            String row = frame.getRow(frame.getjTable().getSelectedRow());
             int rowNumber = frame.getjTable().getSelectedRow();
             model.removeRow(frame.getjTable().getSelectedRow());
             String walletName = frame.getName();
@@ -1281,7 +1245,6 @@ public class MainFrame extends JFrame {
     private boolean tablaOpciones() {
         boolean connectionStatus = opciones.getOptions();
         updateConnectionStatus(connectionStatus);
-
         if (connectionStatus) {
             opciones.getOptions();
             int nOpcionesCALL = calculateOptions("CALL");
@@ -1294,7 +1257,6 @@ public class MainFrame extends JFrame {
             int index = 0, tableIndex = 0;
             populateCALLTable(index, nopciones, tableIndex, nOpcionesCALL);
             populatePUTTable(index, nopciones, tableIndex, nOpcionesPUT);
-
         }
         return connectionStatus;
     }
@@ -1340,15 +1302,12 @@ public class MainFrame extends JFrame {
     }
 
     private boolean tablaFuturos() {
-
         boolean futures = futuros.getFutures();
         updateConnectionStatus(futures);
-
         if (futures) {
             int nfuturos = futuros.Futuros.size();
             DefaultTableModel tablemodel = (DefaultTableModel) TablaFuturos.getModel();
             tablemodel.setRowCount(nfuturos);
-
             for (int i = 0; i < nfuturos; i++) {
                 Futuro f = futuros.Futuros.get(i);
                 TablaFuturos.setValueAt(f.Vencimiento, i, 0);
@@ -1364,7 +1323,6 @@ public class MainFrame extends JFrame {
                 TablaFuturos.setValueAt(f.Anterior, i, 10);
                 TablaFuturos.setValueAt(f.Hora, i, 11);
             }
-            //Notificaciones.setText("Datos disponibles");
         }
         return futures;
     }
@@ -1373,9 +1331,6 @@ public class MainFrame extends JFrame {
         boolean spot = contado.getSpot();
         updateConnectionStatus(spot);
         if (spot) {
-            //Notificaciones.setText("Recolectando datos ....");
-
-            // actualiza la tabla de contado
             contado.getSpot();
             TableModel model = TablaContado.getModel();
             TablaContado.setValueAt(contado.Spot, 0, 0);
@@ -1384,7 +1339,6 @@ public class MainFrame extends JFrame {
             TablaContado.setValueAt(contado.Minimo, 0, 4);
             TablaContado.setValueAt(contado.Fecha, 0, 5);
             TablaContado.setValueAt(contado.Hora, 0, 6);
-
             Float diferencia = toFloat(contado.Diferencia);
             if (diferencia > 0) {
                 model.setValueAt("<html><font color='green'>" + diferencia + "</font></html>", 0, 1);
@@ -1487,7 +1441,7 @@ public class MainFrame extends JFrame {
                     return TablaOpcionesCALL.getModel().getValueAt(i, 2).toString();
                 }
             }
-        } else {
+        }else{
             for (int i = 0; i < TablaOpcionesPUT.getModel().getRowCount(); i++) {
                 String ejercicioTabla = TablaOpcionesPUT.getModel().getValueAt(i, 0).toString();
                 String fechaTabla = TablaOpcionesPUT.getModel().getValueAt(i, 8).toString();

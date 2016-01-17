@@ -1,21 +1,14 @@
 import java.io.File;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class Wallet {
     
     private String walletName;
     private List<WalletOption> wOptions;
-    
-    private float value = 0;
-    private float earnings;
-    private float inverted;
-    
     private WalletFrame frame;
     private WalletIO walletIO;
-    private File f;
+    private float value = 0, earnings, inverted;
 
     public Wallet(String walletName) {
         this.walletName = walletName;
@@ -114,23 +107,15 @@ public class Wallet {
         float pCompra = 0;
         float pVenta = 0;
         if (option.getPrecioCompra().toString().contains("-") || option.getPrecioCompra().toString().contains(" ")) {
-            System.out.println("PCOMPRA: "+ pCompra);
             pCompra = 0f;
         }else{
-            System.out.println("PCOMPRA: "+ pCompra);
             pCompra = toFloat(option.getPrecioCompra());
         }
         if (option.getPrecioVenta().toString().contains("-") || option.getPrecioVenta().toString().contains(" ")) {
-            System.out.println("PVENTA: "+ pVenta);
             pVenta = 0f;
         }else{
-            System.out.println("PVENTA: "+ pVenta);
             pVenta = toFloat(option.getPrecioVenta());
         }
-        
-        /*this.earnings += toFloat(option.getPrecioCompra()) - toFloat(option.getPrecioVenta());
-        this.value += toFloat(option.getPrecioCompra()) * toFloat(option.getCantidad());
-        this.inverted += toFloat(option.getPrecioVenta()) * toFloat(option.getCantidad());*/
         this.earnings += pCompra - pVenta;
         this.value += pCompra * toFloat(option.getCantidad());
         this.inverted += pVenta * toFloat(option.getCantidad());
