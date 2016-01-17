@@ -75,7 +75,6 @@ public class Wallet {
         this.wOptions.add(option);
         calculateEarnings(option);
         this.frame.addOptionsToTable(wOptions.size(), wOptions.get(wOptions.indexOf(wOptions.size()-1)));
-        //writeToFile(option.toWallet(1));
     }
     
     private Float toFloat(String texto){
@@ -112,8 +111,28 @@ public class Wallet {
     }
     
     private void calculateEarnings(WalletOption option) {
-        this.earnings += toFloat(option.getPrecioCompra()) - toFloat(option.getPrecioVenta());
+        float pCompra = 0;
+        float pVenta = 0;
+        if (option.getPrecioCompra().toString().contains("-") || option.getPrecioCompra().toString().contains(" ")) {
+            System.out.println("PCOMPRA: "+ pCompra);
+            pCompra = 0f;
+        }else{
+            System.out.println("PCOMPRA: "+ pCompra);
+            pCompra = toFloat(option.getPrecioCompra());
+        }
+        if (option.getPrecioVenta().toString().contains("-") || option.getPrecioVenta().toString().contains(" ")) {
+            System.out.println("PVENTA: "+ pVenta);
+            pVenta = 0f;
+        }else{
+            System.out.println("PVENTA: "+ pVenta);
+            pVenta = toFloat(option.getPrecioVenta());
+        }
+        
+        /*this.earnings += toFloat(option.getPrecioCompra()) - toFloat(option.getPrecioVenta());
         this.value += toFloat(option.getPrecioCompra()) * toFloat(option.getCantidad());
-        this.inverted += toFloat(option.getPrecioVenta()) * toFloat(option.getCantidad());
+        this.inverted += toFloat(option.getPrecioVenta()) * toFloat(option.getCantidad());*/
+        this.earnings += pCompra - pVenta;
+        this.value += pCompra * toFloat(option.getCantidad());
+        this.inverted += pVenta * toFloat(option.getCantidad());
     }
 }

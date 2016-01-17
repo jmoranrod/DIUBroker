@@ -95,11 +95,19 @@ public class WalletIO {
             Logger.getLogger(Wallet.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        System.out.print("Linea a eliminar" + index + " ");
-        System.out.println("Linea: " + lines.get(index));
         lines.remove(index);
         writeToFile(lines);
         return true;
+    }
+
+    public boolean removeFile() {
+        try{
+            Files.delete(path);
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(Wallet.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
     
 }

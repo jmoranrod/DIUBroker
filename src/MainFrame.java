@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -177,6 +178,11 @@ public class MainFrame extends JFrame {
         acceptWalletNameButton = new javax.swing.JButton();
         cancelWalletNameButton = new javax.swing.JButton();
         fileChooser = new javax.swing.JFileChooser();
+        deleteWalletDialog = new javax.swing.JDialog();
+        deleteLabel = new javax.swing.JLabel();
+        deleteComboBox = new javax.swing.JComboBox();
+        deleteAcceptButton = new javax.swing.JButton();
+        deleteCancelButton = new javax.swing.JButton();
         Escritorio = new javax.swing.JDesktopPane();
         infoPanel = new javax.swing.JPanel();
         Institucion = new javax.swing.JLabel();
@@ -213,7 +219,9 @@ public class MainFrame extends JFrame {
         deleteButton = new javax.swing.JMenuItem();
         walletMenu = new javax.swing.JMenu();
         createWallet = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         openWalletMenuButton = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         addToWalletDialog.setTitle("Añadir a Opción a Cartera");
         addToWalletDialog.setMaximumSize(new java.awt.Dimension(315, 162));
@@ -332,6 +340,55 @@ public class MainFrame extends JFrame {
                 .addGap(21, 21, 21))
         );
 
+        deleteWalletDialog.setTitle("Eliminar cartera");
+        deleteWalletDialog.setMaximumSize(new java.awt.Dimension(400, 183));
+        deleteWalletDialog.setMinimumSize(new java.awt.Dimension(400, 183));
+
+        deleteLabel.setText("Nombre de la cartera: ");
+
+        deleteAcceptButton.setText("Aceptar");
+        deleteAcceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteAcceptButtonActionPerformed(evt);
+            }
+        });
+
+        deleteCancelButton.setText("Cancelar");
+
+        javax.swing.GroupLayout deleteWalletDialogLayout = new javax.swing.GroupLayout(deleteWalletDialog.getContentPane());
+        deleteWalletDialog.getContentPane().setLayout(deleteWalletDialogLayout);
+        deleteWalletDialogLayout.setHorizontalGroup(
+            deleteWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(deleteWalletDialogLayout.createSequentialGroup()
+                .addGroup(deleteWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(deleteWalletDialogLayout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(deleteLabel))
+                    .addGroup(deleteWalletDialogLayout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addComponent(deleteAcceptButton)))
+                .addGap(73, 73, 73)
+                .addGroup(deleteWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deleteComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deleteWalletDialogLayout.createSequentialGroup()
+                        .addComponent(deleteCancelButton)
+                        .addGap(12, 12, 12)))
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+        deleteWalletDialogLayout.setVerticalGroup(
+            deleteWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(deleteWalletDialogLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(deleteWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deleteLabel)
+                    .addComponent(deleteComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
+                .addGroup(deleteWalletDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteAcceptButton)
+                    .addComponent(deleteCancelButton))
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Cartera de Opciones del IBEX35");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/euro.png")).getImage());
@@ -444,11 +501,11 @@ public class MainFrame extends JFrame {
         VentanaFuturos.getContentPane().setLayout(VentanaFuturosLayout);
         VentanaFuturosLayout.setHorizontalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 835, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
         );
         VentanaFuturosLayout.setVerticalGroup(
             VentanaFuturosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
 
         VentanaOpcionesCALL.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -531,7 +588,7 @@ public class MainFrame extends JFrame {
                         .addContainerGap()
                         .addComponent(addCallOptionToWallet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -627,7 +684,7 @@ public class MainFrame extends JFrame {
                     .addGroup(EscritorioLayout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(VentanaOpcionesPUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                         .addComponent(VentanaOpcionesCALL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(EscritorioLayout.createSequentialGroup()
                         .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -641,13 +698,13 @@ public class MainFrame extends JFrame {
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(VentanaFuturos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(VentanaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
                 .addGroup(EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(VentanaOpcionesCALL)
                     .addComponent(VentanaOpcionesPUT))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         Escritorio.setLayer(infoPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Escritorio.setLayer(VentanaContado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -712,10 +769,10 @@ public class MainFrame extends JFrame {
                 .addContainerGap())
         );
 
-        fileMenu.setText("File");
+        fileMenu.setText("Archivo");
 
         exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        exit.setText("Exit");
+        exit.setText("Salir");
         exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitActionPerformed(evt);
@@ -725,9 +782,8 @@ public class MainFrame extends JFrame {
 
         BarraMenu.add(fileMenu);
 
-        editMenu.setText("Edit");
+        editMenu.setText("Editar");
 
-        deleteButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
         deleteButton.setText("Eliminar opción");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -738,16 +794,25 @@ public class MainFrame extends JFrame {
 
         BarraMenu.add(editMenu);
 
-        walletMenu.setText("Wallet");
+        walletMenu.setText("Cartera");
 
         createWallet.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK));
-        createWallet.setText("Create Wallet");
+        createWallet.setText("Crear cartera");
         createWallet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createWalletActionPerformed(evt);
             }
         });
         walletMenu.add(createWallet);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK));
+        jMenuItem2.setText("Cerrar cartera");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        walletMenu.add(jMenuItem2);
 
         openWalletMenuButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK));
         openWalletMenuButton.setText("Abrir cartera");
@@ -757,6 +822,15 @@ public class MainFrame extends JFrame {
             }
         });
         walletMenu.add(openWalletMenuButton);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.SHIFT_MASK));
+        jMenuItem1.setText("Eliminar cartera");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        walletMenu.add(jMenuItem1);
 
         BarraMenu.add(walletMenu);
 
@@ -804,7 +878,6 @@ public class MainFrame extends JFrame {
 
     private void createWalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createWalletActionPerformed
         createWalletDialog.setVisible(true);
-        //createWallet();
     }//GEN-LAST:event_createWalletActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -833,35 +906,6 @@ public class MainFrame extends JFrame {
         addToWalletDialog.setVisible(false);
     }//GEN-LAST:event_acceptButtonActionPerformed
 
-    /*private void updateLabels() {
-        Wallet wallet = null;
-        JInternalFrame[] frameList = Escritorio.getAllFrames();
-        for (JInternalFrame frame : frameList) {
-            if (frame instanceof WalletFrame) {
-                System.out.println("FRAME " + frame.getName());
-                if (frame.isSelected()) {
-                    String walletName = Escritorio.getSelectedFrame().getName();
-                    System.out.println("name "+ walletName);
-                    for (Wallet wallet1 : walletList) {
-                        System.out.println("compare: "+ wallet1.getName());
-                        if (wallet1.getName().equals(walletName)) {
-                            wallet = wallet1;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        earningsLabel.setText("Ganancias de la cartera: " + wallet.getEarnings());
-        if (wallet.getEarnings() < 0f) {
-            earningsLabel.setForeground(Color.red);
-        }else{
-            earningsLabel.setForeground(Color.green);
-        }
-        walletValueLabel.setText("Valor actual de la cartera: " + wallet.getValue());
-        importLabel.setText("Importe invertido: " + wallet.getInverted());
-    }*/
-    
     private void updateLabels(Wallet wallet) {
         earningsLabel.setText("Ganancias de la cartera: " + wallet.getEarnings());
         if (wallet.getEarnings() < 0f) {
@@ -944,7 +988,6 @@ public class MainFrame extends JFrame {
                 if(line.contains(" ")){
                     String[] optionFields = line.split("\\s");
                     String vencimiento = optionFields[2];
-                    System.out.println("PVENTA: " + optionFields[6]);
                     walletOption = new WalletOption(optionFields[0], optionFields[1], vencimiento, optionFields[3], optionFields[4], optionFields[5], optionFields[6]);
 
                     String[] date = walletOption.getVencimiento().split("/");
@@ -974,8 +1017,8 @@ public class MainFrame extends JFrame {
                     }
                 }
             }
-            updateLabels(wallet);
             updateWallets();
+            updateLabels(wallet);
         }else{
             JOptionPane.showMessageDialog(this, "Esta aplicación utiliza archivos .dbr", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -1003,6 +1046,39 @@ public class MainFrame extends JFrame {
             frame.setTableIndex(frame.getTableIndex()-1);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.deleteWalletDialog.setVisible(true);
+        deleteWalletDialog.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void deleteAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAcceptButtonActionPerformed
+        int dialogConfirm = JOptionPane.showConfirmDialog(null, "Al eliminar la cartera se borrará el archivo del disco. ¿Está seguro de querer eliminar?");
+        if (dialogConfirm == JOptionPane.YES_OPTION) {
+            String walletToDelete = deleteComboBox.getSelectedItem().toString();
+            for (Wallet wallet : walletList) {
+                if (wallet.getName().equals(walletToDelete)) {
+                    wallet.getFrame().dispose();
+                    wallet.getWalletIO().removeFile();
+                    walletList.remove(wallet);
+                    fillCombobox();
+                }
+            }
+            this.deleteWalletDialog.setVisible(false);
+        } else if (dialogConfirm == JOptionPane.NO_OPTION){
+            this.deleteWalletDialog.setVisible(false);
+        }
+    }//GEN-LAST:event_deleteAcceptButtonActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        for (Wallet wallet : walletList) {
+            if (wallet.getFrame().getName().equals(Escritorio.getSelectedFrame().getName())) {
+                walletList.remove(wallet);
+                fillCombobox();
+                Escritorio.getSelectedFrame().dispose();
+            }
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1066,7 +1142,12 @@ public class MainFrame extends JFrame {
     private javax.swing.JButton connectionStatusButton;
     private javax.swing.JMenuItem createWallet;
     private javax.swing.JDialog createWalletDialog;
+    private javax.swing.JButton deleteAcceptButton;
     private javax.swing.JMenuItem deleteButton;
+    private javax.swing.JButton deleteCancelButton;
+    private javax.swing.JComboBox deleteComboBox;
+    private javax.swing.JLabel deleteLabel;
+    private javax.swing.JDialog deleteWalletDialog;
     private javax.swing.JLabel earningsLabel;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exit;
@@ -1076,6 +1157,8 @@ public class MainFrame extends JFrame {
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1295,9 +1378,7 @@ public class MainFrame extends JFrame {
     }    
 
     private Wallet createWallet(String name) {
-        //WalletFrame wallet = new WalletFrame();
         Wallet wallet = new Wallet(name);
-        //System.out.println(wallet);
         wallet.getFrame().setVisible(true);
         Escritorio.add(wallet.getFrame());
         walletList.add(wallet);
@@ -1323,18 +1404,16 @@ public class MainFrame extends JFrame {
         opcion.Vencimiento = table.getValueAt(selectedRow, 8).toString();
         opcion.Compra_Precio = table.getValueAt(selectedRow, 2).toString();
         opcion.Venta_Precio = table.getValueAt(selectedRow, 3).toString();
-        //System.out.println("PRECIOV " + opcion.Venta_Precio);
-        //optionsToWallet.add(opcion.toString()); //REVISAR
         optionsToWallet.add(opcion);
         return opcion;
-        //addToSelectedWallet(opcion);
-        //System.out.println(optionsToWallet.get(0).Ejercicio);
     }
 
     private void fillCombobox() {
         walletSelector.removeAllItems();
+        deleteComboBox.removeAllItems();
         for (Wallet wallet : walletList) {
             walletSelector.addItem(wallet.getName());
+            deleteComboBox.addItem(wallet.getName());
         }
     }
 
@@ -1389,9 +1468,15 @@ public class MainFrame extends JFrame {
                         if (ejerTabla.equals(ejercicio) && fechaTabla.equals(fecha)) {
                             wallet.getFrame().getjTable().setValueAt(precioNuevo, i, 5);
                             for (int j = 0; j < wallet.getFrame().getjTable().getModel().getColumnCount(); j++) {
-                                fila = fila + wallet.getFrame().getjTable().getValueAt(i, j).toString();
-                                fila.trim();
+                                if (wallet.getFrame().getjTable().getValueAt(i, j).toString().equals(" ")) {
+                                    fila += "- ";
+                                }else if (wallet.getFrame().getjTable().getValueAt(i, j).toString().contains("-")){
+                                    fila += "- ";
+                                }else{
+                                    fila += wallet.getFrame().getjTable().getValueAt(i, j).toString() + " ";
+                                }
                             }
+                            fila.trim();
                             wallet.getWalletIO().writeToFile(fila);
                             wallet.getWalletIO().removeLine(i+1);
                         }
