@@ -68,6 +68,7 @@ public class MainFrame extends JFrame {
 
         connectionStatusButton.setContentAreaFilled(false);
         connectionStatusButton.setOpaque(true);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivo de cartera", "dbr"));
         fillCombobox();
         setDate();
         Timer timDate = new Timer(1000, new ActionListener() { // 1 segundo
@@ -958,29 +959,32 @@ public class MainFrame extends JFrame {
 
     private void openWalletButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWalletButtonActionPerformed
         fileChooser.setCurrentDirectory(new File("."));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivo de cartera", "dbr"));
         if (evt.getSource() == openWalletButton) {
             int returnValue = fileChooser.showOpenDialog(this);
             if (returnValue == fileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                if (walletList.isEmpty()) {
-                    openWallet(file);
-                } else {
-                    for (int i = 0; i < walletList.size(); i++) {
-                        if (file.getName().substring(0, file.getName().length() - 4).equals(walletList.get(i).getName())) {
-                            break;
-                        }
-                        if (i == walletList.size() - 1) {
-                            openWallet(file);
+                if (file.exists()) {
+                    if (walletList.isEmpty()) {
+                        openWallet(file);
+                    } else {
+                        for (int i = 0; i < walletList.size(); i++) {
+                            if (file.getName().substring(0, file.getName().length() - 4).equals(walletList.get(i).getName())) {
+                                break;
+                            }
+                            if (i == walletList.size() - 1) {
+                                openWallet(file);
+                            }
                         }
                     }
+                } else{
+                    JOptionPane.showMessageDialog(fileChooser, "Ese archivo no existe", "Error al abrir archivo", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
     }//GEN-LAST:event_openWalletButtonActionPerformed
 
     private void openWallet(File file) throws HeadlessException {
-        if (file.getPath().contains(".dbr")) {
+        if (file.getPath().endsWith(".dbr")) {
             Wallet wallet = createWallet(file.getName().substring(0, file.getName().length() - 4));
             List<String> lines = wallet.getWalletIO().readFromFile();
             for (String line : lines) {
